@@ -1,1082 +1,798 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Break Pullback - MQL5 Market">
-    <meta name="theme-color" content="#0a0f1e">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Break Pullback — Breakout & Pullback Trading Education + MT5 Indicator</title>
+<meta name="description" content="Learn the professional Break & Pullback strategy: Break of Structure, Pullback Retest, HTF Daily Bias, Currency Strength. Free education. Automate with MT5.">
+<link rel="canonical" href="https://www.mql5.com/en/market/product/162960">
 
-    <title>Free Breakout & Pullback Trading Education + Multi-Layer Breakout Detector | MT5</title>
-    <meta name="description" content="Learn the professional Break & Pullback strategy used by institutional traders — Break of Structure, Pullback Retest, HTF Daily Bias, and Currency Strength. Then automate it all with Break Pullback indicator for MetaTrader 5.">
-    <meta name="keywords" content="break and pullback strategy, breakout and retest trading, break of structure BOS, change of character CHOCH, smart money concepts SMC, ICT trading strategy, HTF daily bias, currency strength index, multi-pair scanner MT5, forex breakout indicator, gold breakout strategy XAUUSD, pullback entry forex, market structure trading, MetaTrader 5 indicator, MQL5 breakout tool, institutional trading concepts, trend continuation setup">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.mql5.com/en/market/product/162960">
-    <meta property="og:title" content="Free Breakout & Pullback Trading Education + Break Pullback MT5 Indicator">
-    <meta property="og:description" content="Master the Break & Pullback strategy: BOS, Pullback Retest, Daily Bias, Currency Strength. Then automate detection with one powerful MT5 indicator.">
-    <meta property="og:image" content="https://c.mql5.com/31/1941/break-pullback-screen-4113.png">
-    <meta property="og:site_name" content="MQL5 Market">
-    <meta property="og:locale" content="en_US">
+<style>
+:root {
+  --ink:    #08090d;
+  --ink2:   #0e1018;
+  --ink3:   #141720;
+  --rule:   rgba(255,255,255,.07);
+  --rule2:  rgba(255,255,255,.04);
+  --dim:    #5a6070;
+  --mid:    #8b95a8;
+  --light:  #c8d0de;
+  --white:  #edf1f8;
+  --green:  #29b6f6;
+  --green2: rgba(41,182,246,.1);
+  --green3: rgba(41,182,246,.06);
+  --serif:  'Playfair Display', Georgia, serif;
+  --sans:   'IBM Plex Sans', system-ui, sans-serif;
+  --mono:   'IBM Plex Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--light); font-family: var(--sans); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(41,182,246,.2); color: var(--white); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: #1e2430; }
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.mql5.com/en/market/product/162960">
-    <meta name="twitter:title" content="Free Breakout & Pullback Trading Education + MT5 Indicator">
-    <meta name="twitter:description" content="Learn institutional Break & Pullback strategy free. Then automate it with Break Pullback — the smart 3-layer breakout detector for MT5.">
-    <meta name="twitter:image" content="https://c.mql5.com/31/1941/break-pullback-screen-4113.png">
+/* TICKER */
+@keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.ticker-tape { position:fixed;top:0;left:0;right:0;z-index:70;height:30px;background:var(--ink2);border-bottom:1px solid var(--rule);overflow:hidden;display:flex;align-items:center; }
+.ticker-inner { display:flex;gap:3rem;white-space:nowrap;animation:tick 70s linear infinite;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--dim); }
+.ticker-inner span { display:flex;align-items:center;gap:8px; }
+.t-dot { width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;flex-shrink:0; }
+.t-v { color:var(--green);font-weight:500; }
 
-    <link rel="canonical" href="https://www.mql5.com/en/market/product/162960">
+/* NAV */
+#nav { position:fixed;top:30px;left:0;right:0;z-index:60;background:rgba(8,9,13,.92);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid var(--rule);transition:border-color .3s; }
+.nav-inner { max-width:1160px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between; }
+.nav-logo { font-family:var(--serif);font-size:17px;font-weight:600;color:var(--white);letter-spacing:-.01em;display:flex;align-items:center;gap:10px; }
+.nav-logo-mark { width:28px;height:28px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;background:var(--ink3); }
+.nav-links { display:flex;align-items:center;gap:28px; }
+.nav-links a { font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);transition:color .2s; }
+.nav-links a:hover { color:var(--white); }
+.nav-cta { display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--green);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--green);font-family:var(--mono);transition:all .2s;background:transparent; }
+.nav-cta:hover { background:var(--green);color:var(--ink); }
+#mob-btn { display:none;background:none;border:none;color:var(--mid);cursor:pointer; }
+#mob-menu { display:none;flex-direction:column;gap:2px;border-top:1px solid var(--rule);padding:12px 32px 20px;background:var(--ink2); }
+#mob-menu a { padding:10px 0;font-size:13px;color:var(--mid);border-bottom:1px solid var(--rule2); }
+#mob-menu a:last-child { border:none;margin-top:8px; }
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Break Pullback — Smart Multi-Layer Breakout & Pullback Detector",
-        "applicationCategory": "FinanceApplication",
-        "operatingSystem": "MetaTrader 5",
-        "offers": {
-            "@type": "Offer",
-            "url": "https://www.mql5.com/en/market/product/162960",
-            "priceCurrency": "USD",
-            "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "127"
-        },
-        "description": "Professional MT5 indicator that detects Break and Pullback formations with 3-layer confirmation: Structural Breakout, HTF Daily Bias, and Currency Strength Index. Free trading education included.",
-        "provider": {
-            "@type": "Organization",
-            "name": "MQL5 Market",
-            "url": "https://www.mql5.com"
-        }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "What is a Break and Pullback strategy in forex trading?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "A Break and Pullback strategy involves waiting for price to break a key structural level (like a swing high or low), then waiting for price to pull back and retest that broken level before entering in the direction of the breakout. This retest confirms the level has flipped from support to resistance (or vice versa), giving a high-probability entry with a clear invalidation point."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What is Break of Structure (BOS) in trading?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Break of Structure (BOS) occurs when price breaks above a previous swing high in an uptrend or below a previous swing low in a downtrend. It confirms that the current trend is continuing. BOS is a core concept in Smart Money Concepts (SMC) and ICT-style trading."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Why is HTF Daily Bias important for breakout trading?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Higher Timeframe Daily Bias ensures you only take breakout entries that align with the dominant daily trend direction. Trading breakouts against the daily trend has a much lower success rate. By filtering for daily bias, you eliminate a large percentage of false breakout signals."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "How does Currency Strength Index improve breakout entries?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Currency Strength Index measures the relative strength of individual currencies using Rate of Change (ROC). When a breakout occurs, confirming that the driving currency is genuinely strong (and the paired currency is weak) adds a momentum confirmation layer. This prevents entering breakouts that lack real institutional backing."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What pairs and timeframes does Break Pullback work on?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Break Pullback works on all major and minor Forex pairs (EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, GBPJPY, etc.) and Gold (XAUUSD). Recommended timeframes are M15, M30, H1, H4 for intraday trading and H4, D1 for swing trading."
-                }
-            }
-        ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        "name": "How to Trade the Break and Pullback Strategy",
-        "description": "Step-by-step professional guide to trading breakout and pullback setups using market structure, HTF bias, and currency strength confirmation.",
-        "step": [
-            {
-                "@type": "HowToStep",
-                "position": 1,
-                "name": "Identify Market Structure and Key Levels",
-                "text": "Mark swing highs and swing lows on your chart. These structural levels are where breakouts occur. In an uptrend, look for price to break above the most recent swing high (Break of Structure)."
-            },
-            {
-                "@type": "HowToStep",
-                "position": 2,
-                "name": "Confirm Daily Trend Bias",
-                "text": "Check the Daily (or higher) timeframe to determine the dominant trend direction. Only take breakout trades that align with this daily bias. Use a Three Candle Monitor or simple candle analysis on the daily chart."
-            },
-            {
-                "@type": "HowToStep",
-                "position": 3,
-                "name": "Wait for the Pullback (Retest)",
-                "text": "After the structural break, do not chase the move. Wait for price to pull back and retest the broken level. This retest confirms the level has flipped — former resistance becomes support (or vice versa). This is your entry zone."
-            },
-            {
-                "@type": "HowToStep",
-                "position": 4,
-                "name": "Confirm with Currency Strength",
-                "text": "Before entering, check the Currency Strength Index. Ensure the currency driving the breakout is genuinely strong and the paired currency is weak. This confirms real momentum behind the move."
-            },
-            {
-                "@type": "HowToStep",
-                "position": 5,
-                "name": "Execute with Proper Risk Management",
-                "text": "Enter on the pullback with stop loss below the retest zone. Target the next structural level. Maintain minimum 1:2 risk-reward ratio. Never risk more than 1-2% of your account per trade."
-            }
-        ]
-    }
-    </script>
+/* ANIMATIONS */
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.fade { opacity:0;animation:fadeIn .8s cubic-bezier(.22,1,.36,1) forwards; }
+.d1{animation-delay:.1s}.d2{animation-delay:.22s}.d3{animation-delay:.36s}.d4{animation-delay:.5s}
+.reveal { opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal.on { opacity:1;transform:translateY(0); }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
-                    },
-                    colors: {
-                        gold: {
-                            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
-                            400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
-                            800: '#1e40af', 900: '#1e3a8f',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+/* LAYOUT */
+.ctr { max-width:1160px;margin:0 auto; }
+.ctr-md { max-width:860px;margin:0 auto; }
+.ctr-sm { max-width:680px;margin:0 auto; }
+hr.rule { border:none;border-top:1px solid var(--rule); }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+/* LABEL */
+.lbl { font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);display:inline-flex;align-items:center;gap:8px; }
+.lbl::before { content:'';display:block;width:12px;height:1px;background:currentColor;flex-shrink:0; }
+.lbl-g { color:var(--green); }
 
-        :root {
-            --bg-base: #06080f;
-            --bg-surface: #0c1120;
-            --bg-card: rgba(255,255,255,0.04);
-            --accent: #4e9eff;
-            --accent-soft: #a5c8ff;
-            --accent-dim: rgba(78,158,255,0.15);
-            --text-primary: #e8f0ff;
-            --text-secondary: #8898b8;
-            --text-muted: #4a5878;
-            --border: rgba(255,255,255,0.07);
-            --border-accent: rgba(78,158,255,0.25);
-        }
+/* BUTTONS */
+.btn-p { display:inline-flex;align-items:center;gap:10px;padding:13px 28px;background:var(--white);color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:all .2s; }
+.btn-p:hover { background:var(--green);color:var(--ink); }
+.btn-g { display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border:1px solid var(--rule);color:var(--mid);font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .2s; }
+.btn-g:hover { border-color:var(--mid);color:var(--white); }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+/* SECTION HEADER */
+.sh { margin-bottom:56px; }
+.sh-h { font-family:var(--serif);font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:600;line-height:1.2;letter-spacing:-.02em;color:var(--white);margin:16px 0; }
+.sh-p { font-size:15px;color:var(--mid);font-weight:300;line-height:1.7;max-width:540px; }
 
-        html { scroll-behavior: smooth; }
+/* HERO */
+#hero { position:relative;padding:200px 32px 120px;overflow:hidden; }
+#hero::before { content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--rule2) 1px,transparent 1px),linear-gradient(90deg,var(--rule2) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,black,transparent); }
+#hero::after { content:'';position:absolute;pointer-events:none;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(41,182,246,.04) 0%,transparent 70%);top:30%;left:50%;transform:translateX(-50%); }
+.hero-inner { display:grid;grid-template-columns:1fr auto;align-items:start;gap:60px; }
+.hero-candles { flex-shrink:0;opacity:0;animation:fadeIn .8s cubic-bezier(.22,1,.36,1) .6s forwards;padding-top:0; }
+@media(max-width:900px){ .hero-inner{grid-template-columns:1fr} .hero-candles{display:none} }
+.hero-h { font-family:var(--serif);font-size:clamp(2.8rem,6vw,5rem);font-weight:700;line-height:1.08;letter-spacing:-.025em;color:var(--white);margin-bottom:28px; }
+.hero-h em { font-style:italic;color:var(--green); }
+.hero-sub { font-size:17px;font-weight:300;color:var(--mid);line-height:1.75;max-width:580px;margin-bottom:44px; }
+.hero-sub strong { color:var(--light);font-weight:500; }
+.hero-acts { display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-bottom:60px; }
+.hero-meta { display:flex;flex-wrap:wrap;gap:32px;padding-top:40px;border-top:1px solid var(--rule); }
+.hm-val { font-family:var(--serif);font-size:1.75rem;font-weight:600;color:var(--white);line-height:1; }
+.hm-key { font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:4px; }
 
-        body {
-            background: var(--bg-base);
-            color: var(--text-primary);
-            font-family: 'DM Sans', system-ui, sans-serif;
-            font-feature-settings: 'kern' 1, 'liga' 1;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+/* EDU BANNER */
+.edu-bar { background:var(--ink2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:28px 32px; }
+.edu-bar-in { max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px; }
+.edu-icon { width:42px;height:42px;background:var(--ink3);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.edu-stats { display:flex;gap:0; }
+.est { text-align:center;padding:0 24px;border-right:1px solid var(--rule); }
+.est:first-child { padding-left:0; }
+.est:last-child { border-right:none; }
+.est-n { font-family:var(--serif);font-size:1.4rem;font-weight:600;color:var(--white);line-height:1; }
+.est-l { font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:4px; }
 
-        ::selection { background: rgba(78,158,255,0.25); color: #c8dcff; }
+/* PROBLEM */
+.prob-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1px;background:var(--rule); }
+.prob-card { background:var(--ink2);padding:36px 32px;transition:background .25s; }
+.prob-card:hover { background:var(--ink3); }
+.prob-n { font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em;margin-bottom:20px; }
+.prob-h { font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:12px;line-height:1.35; }
+.prob-p { font-size:13px;color:var(--mid);font-weight:300;line-height:1.75; }
+.prob-p strong { color:var(--light);font-weight:500; }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: #1a2a4a; border-radius: 8px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+/* LESSON */
+.lesson { border-top:1px solid var(--rule);padding:52px 0;display:grid;grid-template-columns:100px 1fr;gap:48px; }
+.lesson:last-child { border-bottom:1px solid var(--rule); }
+.l-num { font-family:var(--serif);font-size:2.5rem;font-weight:400;color:var(--ink3);line-height:1;-webkit-text-stroke:1px var(--rule); }
+.l-layer { font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px;padding:3px 8px;border:1px solid var(--rule);color:var(--dim);background:var(--ink2);display:inline-block; }
+.l-layer.g { border-color:rgba(41,182,246,.25);color:var(--green);background:var(--green3); }
+.l-tag { font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:10px; }
+.l-h { font-family:var(--serif);font-size:1.35rem;font-weight:600;color:var(--white);margin-bottom:20px;line-height:1.3; }
+.l-p { font-size:14px;color:var(--mid);font-weight:300;line-height:1.85;margin-bottom:16px; }
+.l-p strong { color:var(--light);font-weight:500; }
+.l-pills { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px; }
+.l-pill { font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--rule);color:var(--dim); }
+.l-bridge { border-left:2px solid var(--green);padding:12px 18px;background:var(--green3);font-size:12px;font-weight:300;color:var(--mid);line-height:1.7; }
+.l-bridge strong { color:var(--green);font-weight:500; }
 
-        /* Hero BG */
-        .hero-bg {
-            background-size: cover;
-            background-position: center 20%;
-            background-repeat: no-repeat;
-        }
-        .hero-overlay {
-            background: linear-gradient(
-                to bottom,
-                rgba(6,8,15,0.55) 0%,
-                rgba(6,8,15,0.30) 25%,
-                rgba(6,8,15,0.20) 45%,
-                rgba(6,8,15,0.45) 72%,
-                rgba(6,8,15,0.85) 88%,
-                rgba(6,8,15,1.00) 100%
-            );
-        }
+/* LAYERS */
+.ly-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule); }
+.ly-card { background:var(--ink2);padding:40px 32px;transition:background .25s; }
+.ly-card:hover { background:var(--ink3); }
+.ly-n { font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:20px; }
+.ly-lbl { font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px; }
+.ly-h { font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:14px;line-height:1.3; }
+.ly-p { font-size:13px;color:var(--mid);font-weight:300;line-height:1.75; }
 
-        /* Animations */
-        @keyframes fadeInUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes pulseSoft { 0%,100% { box-shadow:0 0 0 0 rgba(78,158,255,0.35); } 50% { box-shadow:0 0 24px 6px rgba(78,158,255,0.12); } }
-        @keyframes ticker { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
-        @keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
-        @keyframes softGlow { 0%,100% { opacity:.6; } 50% { opacity:1; } }
+/* FEATURES */
+.ft-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule); }
+.ft-card { background:var(--ink2);padding:32px 28px;transition:background .25s; }
+.ft-card:hover { background:var(--ink3); }
+.ft-icon { margin-bottom:20px;color:var(--dim); }
+.ft-h { font-size:13px;font-weight:600;color:var(--white);letter-spacing:.01em;margin-bottom:8px; }
+.ft-p { font-size:12px;color:var(--dim);font-weight:300;line-height:1.75; }
 
-        .anim-up { animation: fadeInUp .7s cubic-bezier(.16,1,.3,1) forwards; opacity:0; }
-        .d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}.d5{animation-delay:.5s}.d6{animation-delay:.6s}
+/* COMPARISON */
+.cmp { width:100%;border-collapse:collapse; }
+.cmp thead tr { border-bottom:1px solid var(--rule); }
+.cmp th { padding:14px 20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:500;text-align:left; }
+.cmp th:nth-child(2) { color:var(--green);text-align:center; }
+.cmp th:nth-child(3) { text-align:center; }
+.cmp td { padding:14px 20px;font-size:13px;color:var(--mid);border-bottom:1px solid var(--rule2); }
+.cmp td:nth-child(2),.cmp td:nth-child(3) { text-align:center; }
+.cmp tr:last-child td { border-bottom:none; }
+.cmp tr:hover td { background:var(--ink3); }
 
-        .pulse-gold { animation: pulseSoft 3s ease-in-out infinite; }
-        .ticker { animation: ticker 80s linear infinite; }
+/* FAQ */
+.faq-item { border-bottom:1px solid var(--rule); }
+.faq-btn { width:100%;display:flex;align-items:center;justify-content:space-between;padding:22px 0;background:none;border:none;color:var(--light);cursor:pointer;text-align:left;transition:color .2s; }
+.faq-btn:hover { color:var(--white); }
+.faq-q { font-size:14px;font-weight:500;padding-right:24px;line-height:1.5; }
+.faq-ico { flex-shrink:0;color:var(--dim);transition:transform .3s; }
+.faq-body { display:none;padding:0 0 22px;font-size:13px;color:var(--mid);font-weight:300;line-height:1.85; }
+.faq-item.open .faq-ico { transform:rotate(45deg); }
 
-        /* Shimmer button — softer modern gradient */
-        .shimmer-btn {
-            background: linear-gradient(110deg, #2a6dd9 0%, var(--accent) 30%, #2a6dd9 55%, #7db8ff 80%, #2a6dd9 100%);
-            background-size: 200% 100%;
-            animation: shimmer 3.5s linear infinite;
-            border-radius: 10px;
-        }
+/* TG CARD */
+.tg-card { background:var(--ink2);border:1px solid var(--rule);padding:48px 40px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start; }
+.tg-ico { width:48px;height:48px;background:var(--ink3);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.tg-h { font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--white);margin-bottom:8px; }
+.tg-p { font-size:13px;color:var(--mid);font-weight:300;line-height:1.75;margin-bottom:24px; }
+.tg-btn { display:inline-flex;align-items:center;gap:8px;border:1px solid var(--green);color:var(--green);padding:10px 20px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .2s; }
+.tg-btn:hover { background:var(--green);color:var(--ink); }
 
-        /* Glass */
-        .glass {
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-        }
+/* FINAL CTA */
+.final { position:relative;padding:120px 32px;border-top:1px solid var(--rule);overflow:hidden;text-align:center; }
+.final::before { content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(41,182,246,.05) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none; }
+.final-h { font-family:var(--serif);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;color:var(--white);line-height:1.1;letter-spacing:-.025em;margin-bottom:20px; }
+.final-h em { font-style:italic;color:var(--green); }
+.final-p { font-size:16px;color:var(--mid);font-weight:300;line-height:1.7;max-width:460px;margin:0 auto 40px; }
+.final-meta { display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-top:36px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim); }
+.final-meta span { display:flex;align-items:center;gap:8px; }
 
-        /* Gradient text */
-        .grad-text {
-            background: linear-gradient(135deg, #7ec8ff, #4e9eff, #a5c8ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .grad-white {
-            background: linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #8898b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+/* FOOTER */
+footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink2); }
+.foot-in { max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px; }
+.foot-logo { font-family:var(--serif);font-size:15px;font-weight:600;color:var(--white); }
+.foot-links { display:flex;flex-wrap:wrap;gap:20px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim); }
+.foot-links a:hover { color:var(--white); }
+.foot-links a.ac:hover { color:var(--green); }
+.disc { font-size:11px;color:var(--dim);text-align:center;margin-top:28px;line-height:1.7; }
 
-        /* Cards */
-        .card-h { transition: all .4s cubic-bezier(.16,1,.3,1); }
-        .card-h:hover {
-            transform: translateY(-5px);
-            border-color: var(--border-accent);
-            box-shadow: 0 24px 48px -16px rgba(78,158,255,0.12), 0 0 0 1px rgba(78,158,255,0.08);
-        }
+/* MOB CTA */
+.mob-cta { position:fixed;bottom:20px;left:16px;right:16px;z-index:50;display:none; }
+.mob-cta a { display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:var(--white);color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 8px 32px rgba(0,0,0,.6); }
 
-        /* Scroll reveal */
-        .sr { opacity:0; transform:translateY(24px); transition: all .7s cubic-bezier(.16,1,.3,1); }
-        .sr.vis { opacity:1; transform:translateY(0); }
-
-        .bridge-card { border-left: 2px solid rgba(78,158,255,.35); }
-
-        /* Ambient glow orb behind hero content */
-        .glow-orb {
-            background: radial-gradient(ellipse at center,
-                rgba(78,158,255,0.07) 0%,
-                rgba(78,158,255,0.04) 25%,
-                rgba(78,158,255,0.02) 50%,
-                rgba(78,158,255,0.005) 68%,
-                transparent 80%
-            );
-        }
-            /* stat-card hover */
-        .stat-card:hover {
-            transform: translateY(-6px);
-            background: rgba(78,158,255,0.06) !important;
-            border-color: rgba(78,158,255,0.30) !important;
-            box-shadow: 0 20px 40px -12px rgba(78,158,255,0.15), 0 0 0 1px rgba(78,158,255,0.12);
-        }
-    </style>
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-cta.dk{display:none}
+  #mob-btn{display:block}
+  .ly-grid{grid-template-columns:1fr}
+  .lesson{grid-template-columns:1fr;gap:20px}
+  .l-num-col{display:flex;flex-direction:row;align-items:center;gap:14px}
+  .l-num{font-size:1.6rem}
+  .tg-card{grid-template-columns:1fr}
+  .mob-cta{display:block}
+  .hero-meta{gap:20px}
+  .edu-stats{flex-wrap:wrap}
+}
+@media(max-width:600px){
+  #hero{padding:160px 20px 80px}
+  .section-p{padding:64px 20px}
+  .edu-bar{padding:24px 20px}
+  .edu-bar-in{flex-direction:column}
+  .prob-grid{grid-template-columns:1fr}
+  .ft-grid{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
-<body class="antialiased">
-
-
-
+<body>
 
 <!-- TICKER -->
-<div class="fixed top-0 left-0 right-0 z-[60] bg-[#06080f]/85 glass border-b border-blue-500/20 overflow-hidden h-8 flex items-center">
-    <div class="ticker whitespace-nowrap flex items-center gap-10 text-[11px]">
-        <span class="flex items-center gap-2"><i data-lucide="zap" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Don't chase breakouts — <span class="text-blue-300 font-medium">wait for the pullback retest.</span></span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="layers" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">3-Layer confirmation: <span class="text-blue-300 font-medium">BOS · Daily Bias · Currency Strength</span></span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="scan" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Scans <span class="text-blue-300 font-medium">29 pairs simultaneously</span> — no manual chart switching needed.</span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="trending-up" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Trade with the <span class="text-blue-300 font-medium">HTF Daily Bias</span> — stop fighting the dominant trend.</span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="bar-chart-2" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Smart simple fast — <span class="text-blue-300 font-medium">trade smarter, not harder.</span></span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="bar-chart-2" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Currency Strength Index filters out <span class="text-blue-300 font-medium">low-momentum false breakouts.</span></span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="zap" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Don't chase breakouts — <span class="text-blue-300 font-medium">wait for the pullback retest.</span></span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="layers" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">3-Layer confirmation: <span class="text-blue-300 font-medium">BOS · Daily Bias · Currency Strength</span></span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="scan" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Scans <span class="text-blue-300 font-medium">29 pairs simultaneously</span> — no manual chart switching needed.</span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="trending-up" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Trade with the <span class="text-blue-300 font-medium">HTF Daily Bias</span> — stop fighting the dominant trend.</span></span>
-        <span class="text-blue-800">✦</span>
-        <span class="text-blue-800">✦</span>
-        <span class="flex items-center gap-2"><i data-lucide="bar-chart-2" class="w-3 h-3 text-blue-400 flex-shrink-0"></i><span class="text-zinc-300">Currency Strength Index filters out <span class="text-blue-300 font-medium">low-momentum false breakouts.</span></span></span>
-    </div>
+<div class="ticker-tape" aria-hidden="true">
+  <div class="ticker-inner">
+    <span><span class="t-dot"></span> Free education — <span class="t-v">Break &amp; Pullback Strategy</span></span>
+    <span>BOS Detection &nbsp;·&nbsp; <span class="t-v">Layer 01</span></span>
+    <span>HTF Daily Bias &nbsp;·&nbsp; <span class="t-v">Layer 02</span></span>
+    <span>Currency Strength &nbsp;·&nbsp; <span class="t-v">Layer 03</span></span>
+    <span><span class="t-dot"></span> MetaTrader 5 Indicator</span>
+    <span>29+ Pairs &nbsp;·&nbsp; <span class="t-v">Scanned Simultaneously</span></span>
+    <span>M1 — D1 &nbsp;·&nbsp; <span class="t-v">All Timeframes</span></span>
+    <span><span class="t-dot"></span> 100% Free Education · No Signup</span>
+    <span><span class="t-dot"></span> Free education — <span class="t-v">Break &amp; Pullback Strategy</span></span>
+    <span>BOS Detection &nbsp;·&nbsp; <span class="t-v">Layer 01</span></span>
+    <span>HTF Daily Bias &nbsp;·&nbsp; <span class="t-v">Layer 02</span></span>
+    <span>Currency Strength &nbsp;·&nbsp; <span class="t-v">Layer 03</span></span>
+    <span><span class="t-dot"></span> MetaTrader 5 Indicator</span>
+    <span>29+ Pairs &nbsp;·&nbsp; <span class="t-v">Scanned Simultaneously</span></span>
+    <span>M1 — D1 &nbsp;·&nbsp; <span class="t-v">All Timeframes</span></span>
+    <span><span class="t-dot"></span> 100% Free Education · No Signup</span>
+  </div>
 </div>
 
 <!-- NAV -->
-<nav class="fixed top-8 left-0 right-0 z-50 glass bg-[#06080f]/70 border-b border-blue-500/10 transition-colors duration-300" id="mainNav">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" class="flex items-center gap-2.5 group" aria-label="Home">
-            <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors duration-300">
-                <i data-lucide="trending-up" class="w-4 h-4 text-blue-400"></i>
-            </div>
-            <span class="font-bold text-sm tracking-tight">Break<span class="text-blue-400">Pullback</span></span>
-        </a>
-        <div class="hidden md:flex items-center gap-8">
-            <a href="#education" class="text-xs font-medium text-zinc-400 hover:text-white transition-colors duration-300">Free Education</a>
-            <a href="#problem" class="text-xs font-medium text-zinc-400 hover:text-white transition-colors duration-300">The Problem</a>
-            <a href="#layers" class="text-xs font-medium text-zinc-400 hover:text-white transition-colors duration-300">3-Layer System</a>
-            <a href="#features" class="text-xs font-medium text-zinc-400 hover:text-white transition-colors duration-300">Features</a>
-            <a href="#faq" class="text-xs font-medium text-zinc-400 hover:text-white transition-colors duration-300">FAQ</a>
-        </div>
-        <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="shimmer-btn text-black text-xs font-bold tracking-wider uppercase px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity duration-300 pulse-gold">
-            Get on MQL5
-        </a>
-        <button id="mobBtn" class="md:hidden text-zinc-400 hover:text-white transition-colors" aria-label="Toggle menu"><i data-lucide="menu" class="w-5 h-5"></i></button>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark"><i data-lucide="trending-up" style="width:14px;height:14px;color:var(--green)"></i></div>
+      Break<span style="color:var(--green)">Pullback</span>
+    </a>
+    <div class="nav-links">
+      <a href="#education">Education</a>
+      <a href="#problem">The Problem</a>
+      <a href="#layers">3-Layer System</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
     </div>
-    <div id="mobMenu" class="hidden md:hidden border-t border-white/5 bg-[#06080f]/97 glass">
-        <div class="px-6 py-4 flex flex-col gap-3">
-            <a href="#education" class="text-sm text-zinc-400 hover:text-white py-2 ml">Free Education</a>
-            <a href="#problem" class="text-sm text-zinc-400 hover:text-white py-2 ml">The Problem</a>
-            <a href="#layers" class="text-sm text-zinc-400 hover:text-white py-2 ml">3-Layer System</a>
-            <a href="#features" class="text-sm text-zinc-400 hover:text-white py-2 ml">Features</a>
-            <a href="#faq" class="text-sm text-zinc-400 hover:text-white py-2 ml">FAQ</a>
-            <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="shimmer-btn text-black text-xs font-bold tracking-wider uppercase px-5 py-3 rounded-lg text-center mt-2">Get on MQL5</a>
-        </div>
-    </div>
+    <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener" class="nav-cta dk">
+      Get on MQL5 <i data-lucide="arrow-up-right" style="width:13px;height:13px"></i>
+    </a>
+    <button id="mob-btn" aria-label="Menu"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
+  </div>
+  <div id="mob-menu">
+    <a href="#education" class="ml">Education</a>
+    <a href="#problem" class="ml">The Problem</a>
+    <a href="#layers" class="ml">3-Layer System</a>
+    <a href="#features" class="ml">Features</a>
+    <a href="#faq" class="ml">FAQ</a>
+    <a href="https://www.mql5.com/en/market/product/162960" target="_blank" class="nav-cta" style="justify-content:center;">Get on MQL5 →</a>
+  </div>
 </nav>
 
-<main>
-    <!-- HERO -->
-    <section class="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-6 overflow-hidden hero-bg">
-        <!-- BG1 chart full width, opacity 90% with text protection overlay -->
-        
-        <div class="glow-orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] pointer-events-none"></div>
-        <div class="relative max-w-5xl mx-auto text-center z-10">
-            <div class="anim-up inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-400/20 bg-blue-400/5 mb-8">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                <span class="text-[11px] font-medium text-blue-300 tracking-wider uppercase">Free Breakout & Pullback Education Included</span>
-            </div>
-            <h1 class="anim-up d1 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.08] mb-6">
-                <span class="grad-white">Stop Chasing Breakouts!</span><br>
-                <span class="grad-text">Trade the Pullback.</span>
-            </h1>
-            <p class="anim-up d2 text-base sm:text-lg md:text-xl text-zinc-400 font-light leading-relaxed max-w-2xl mx-auto mb-10">
-                Learn the <strong class="text-white font-medium">Break & Pullback strategy</strong> — Break of Structure, Retest entries, HTF Daily Bias, and Currency Strength — completely <strong class="text-white font-medium">free</strong>. Then automate every detection with one MT5 indicator.
-            </p>
-            <div class="anim-up d3 flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="shimmer-btn text-white font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-xl hover:opacity-90 transition-all duration-300 pulse-gold flex items-center gap-2 w-full sm:w-auto justify-center">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                    Buy on MQL5 Market
-                </a>
-                <a href="#education" class="border border-blue-500/20 text-white font-medium text-sm px-8 py-4 rounded-xl hover:bg-white/5 hover:border-white/20 transition-all duration-300 flex items-center gap-2 w-full sm:w-auto justify-center">
-                    <i data-lucide="book-open" class="w-4 h-4"></i>
-                    Read Free Lessons First
-                </a>
-            </div>
-            <div class="anim-up d4 flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-500">
-                <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-green-400"></i> MQL5 Verified</span>
-                <span class="flex items-center gap-1.5"><i data-lucide="layers" class="w-3.5 h-3.5 text-blue-400"></i> 3-Layer BOS Confirmation</span>
-                <span class="flex items-center gap-1.5"><i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-blue-400"></i> Simple Elegant</span>
-                <span class="flex items-center gap-1.5"><i data-lucide="monitor" class="w-3.5 h-3.5 text-blue-400"></i> MetaTrader 5</span>
-            </div>
+<!-- HERO -->
+<section id="hero">
+  <div class="ctr" style="position:relative;z-index:1;">
+    <div class="hero-inner">
+      <div>
+        <div class="fade" style="margin-bottom:28px;"><span class="lbl lbl-g">Trading Education &amp; MT5 Indicator</span></div>
+        <h1 class="hero-h fade d1">Learn the Strategy.<br><em>Then Automate It.</em></h1>
+        <p class="hero-sub fade d2">
+          A <strong>free professional education resource</strong> on the Break &amp; Pullback method — market structure, retest entries, higher timeframe bias, and currency strength. Then see how the <strong>Break Pullback indicator</strong> applies every layer automatically on MT5.
+        </p>
+        <div class="hero-acts fade d3">
+          <a href="#education" class="btn-g"><i data-lucide="book-open" style="width:15px;height:15px"></i> Read Free Lessons</a>
+          <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener" class="btn-p">Get Indicator on MQL5 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></a>
         </div>
-    </section>
-
-    <!-- SOCIAL PROOF CARDS -->
-    <section class="relative py-16 overflow-hidden">
-        <!-- top/bottom divider lines -->
-        <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(to right,transparent,rgba(78,158,255,0.18),transparent);"></div>
-        <div class="absolute bottom-0 left-0 right-0 h-px" style="background:linear-gradient(to right,transparent,rgba(78,158,255,0.18),transparent);"></div>
-        <!-- subtle radial bg -->
-        <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 50%,rgba(78,158,255,0.04) 0%,transparent 70%);"></div>
-
-        <div class="relative max-w-6xl mx-auto px-6">
-            <div class="sr grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-
-                <!-- Card 1 — 3-Layer -->
-                <div class="stat-card group relative rounded-2xl p-6 overflow-hidden"
-                     style="background:rgba(255,255,255,0.03);border:1px solid rgba(78,158,255,0.12);transition:all .35s cubic-bezier(.16,1,.3,1);">
-                    <!-- corner accent -->
-                    <div class="absolute top-0 right-0 w-16 h-16 pointer-events-none" style="background:radial-gradient(ellipse at top right,rgba(78,158,255,0.12),transparent 70%);"></div>
-                    <!-- icon -->
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                         style="background:rgba(78,158,255,0.08);border:1px solid rgba(78,158,255,0.18);">
-                        <i data-lucide="layers" class="w-4 h-4 text-blue-400"></i>
-                    </div>
-                    <!-- value -->
-                    <p class="text-3xl md:text-4xl font-bold mb-1 leading-none"
-                       style="background:linear-gradient(135deg,#7ec8ff,#4e9eff,#a5c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">3-Layer</p>
-                    <!-- label -->
-                    <p class="text-[11px] text-zinc-500 tracking-widest uppercase mt-2 font-medium">Confirmation System</p>
-                    <!-- bottom bar -->
-                    <div class="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl"
-                         style="background:linear-gradient(to right,rgba(78,158,255,0.4),rgba(78,158,255,0.1));"></div>
-                </div>
-
-                <!-- Card 2 — Simple Elegant -->
-                <div class="stat-card group relative rounded-2xl p-6 overflow-hidden"
-                     style="background:rgba(255,255,255,0.03);border:1px solid rgba(78,158,255,0.12);transition:all .35s cubic-bezier(.16,1,.3,1);">
-                    <div class="absolute top-0 right-0 w-16 h-16 pointer-events-none" style="background:radial-gradient(ellipse at top right,rgba(78,158,255,0.12),transparent 70%);"></div>
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                         style="background:rgba(78,158,255,0.08);border:1px solid rgba(78,158,255,0.18);">
-                        <i data-lucide="zap" class="w-4 h-4 text-blue-400"></i>
-                    </div>
-                    <p class="text-3xl md:text-4xl font-bold mb-1 leading-none"
-                       style="background:linear-gradient(135deg,#7ec8ff,#4e9eff,#a5c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Simple</p>
-                    <p class="text-[11px] text-zinc-500 tracking-widest uppercase mt-2 font-medium">Fixed Signals</p>
-                    <div class="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl"
-                         style="background:linear-gradient(to right,rgba(78,158,255,0.4),rgba(78,158,255,0.1));"></div>
-                </div>
-
-                <!-- Card 3 — M1–D1 -->
-                <div class="stat-card group relative rounded-2xl p-6 overflow-hidden"
-                     style="background:rgba(255,255,255,0.03);border:1px solid rgba(78,158,255,0.12);transition:all .35s cubic-bezier(.16,1,.3,1);">
-                    <div class="absolute top-0 right-0 w-16 h-16 pointer-events-none" style="background:radial-gradient(ellipse at top right,rgba(78,158,255,0.12),transparent 70%);"></div>
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                         style="background:rgba(78,158,255,0.08);border:1px solid rgba(78,158,255,0.18);">
-                        <i data-lucide="clock" class="w-4 h-4 text-blue-400"></i>
-                    </div>
-                    <p class="text-3xl md:text-4xl font-bold mb-1 leading-none"
-                       style="background:linear-gradient(135deg,#7ec8ff,#4e9eff,#a5c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">M1–D1</p>
-                    <p class="text-[11px] text-zinc-500 tracking-widest uppercase mt-2 font-medium">Multi-Timeframe</p>
-                    <div class="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl"
-                         style="background:linear-gradient(to right,rgba(78,158,255,0.4),rgba(78,158,255,0.1));"></div>
-                </div>
-
-                <!-- Card 4 — 20+ -->
-                <div class="stat-card group relative rounded-2xl p-6 overflow-hidden"
-                     style="background:rgba(255,255,255,0.03);border:1px solid rgba(78,158,255,0.12);transition:all .35s cubic-bezier(.16,1,.3,1);">
-                    <div class="absolute top-0 right-0 w-16 h-16 pointer-events-none" style="background:radial-gradient(ellipse at top right,rgba(78,158,255,0.12),transparent 70%);"></div>
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                         style="background:rgba(78,158,255,0.08);border:1px solid rgba(78,158,255,0.18);">
-                        <i data-lucide="scan" class="w-4 h-4 text-blue-400"></i>
-                    </div>
-                    <p class="text-3xl md:text-4xl font-bold mb-1 leading-none"
-                       style="background:linear-gradient(135deg,#7ec8ff,#4e9eff,#a5c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">20+</p>
-                    <p class="text-[11px] text-zinc-500 tracking-widest uppercase mt-2 font-medium">Pairs Scanned</p>
-                    <div class="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl"
-                         style="background:linear-gradient(to right,rgba(78,158,255,0.4),rgba(78,158,255,0.1));"></div>
-                </div>
-
-            </div>
+        <div class="hero-meta fade d4">
+          <div><div class="hm-val">5</div><div class="hm-key">Free Lessons</div></div>
+          <div><div class="hm-val">3</div><div class="hm-key">Confirmation Layers</div></div>
+          <div><div class="hm-val">29+</div><div class="hm-key">Pairs Scanned</div></div>
+          <div><div class="hm-val">M1–D1</div><div class="hm-key">All Timeframes</div></div>
+          <div><div class="hm-val" style="color:var(--green)">Free</div><div class="hm-key">Education Cost</div></div>
         </div>
-    </section>
+      </div>
 
-    <!-- PROBLEM -->
-    <section id="problem" class="relative py-24 md:py-32 px-6">
-        <!-- BG2 Car Left BG -->
-        <!-- BG2 car left side, opacity 20% -->
+      <!-- CANDLESTICK GRAPHIC -->
+      <div class="hero-candles">
+        <svg width="430" height="460" viewBox="0 0 430 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- CANDLE 1 — blue, shortest & lowest -->
+          <line x1="36" y1="340" x2="36" y2="355" stroke="#29b6f6" stroke-width="2.5"/>
+          <rect x="4" y="355" width="64" height="60" fill="#29b6f6"/>
+          <line x1="36" y1="415" x2="36" y2="430" stroke="#29b6f6" stroke-width="2.5"/>
+
+          <!-- CANDLE 2 — blue, short -->
+          <line x1="126" y1="280" x2="126" y2="300" stroke="#29b6f6" stroke-width="2.5"/>
+          <rect x="94" y="300" width="64" height="90" fill="#29b6f6"/>
+          <line x1="126" y1="390" x2="126" y2="415" stroke="#29b6f6" stroke-width="2.5"/>
+
+          <!-- CANDLE 3 — blue, medium -->
+          <line x1="216" y1="200" x2="216" y2="228" stroke="#29b6f6" stroke-width="2.5"/>
+          <rect x="184" y="228" width="64" height="150" fill="#29b6f6"/>
+          <line x1="216" y1="378" x2="216" y2="420" stroke="#29b6f6" stroke-width="2.5"/>
+
+          <!-- CANDLE 4 — blue, tallest -->
+          <line x1="306" y1="10" x2="306" y2="48" stroke="#29b6f6" stroke-width="2.5"/>
+          <rect x="272" y="48" width="68" height="220" fill="#29b6f6"/>
+          <line x1="306" y1="268" x2="306" y2="310" stroke="#29b6f6" stroke-width="2.5"/>
+
+          <!-- CANDLE 5 — amber, tall -->
+          <line x1="396" y1="28" x2="396" y2="68" stroke="#ffab00" stroke-width="2.5"/>
+          <rect x="364" y="68" width="64" height="178" fill="#ffab00"/>
+          <line x1="396" y1="246" x2="396" y2="290" stroke="#ffab00" stroke-width="2.5"/>
+
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDU BANNER -->
+<div class="edu-bar">
+  <div class="edu-bar-in reveal">
+    <div style="display:flex;align-items:flex-start;gap:20px;">
+      <div class="edu-icon"><i data-lucide="graduation-cap" style="width:20px;height:20px;color:var(--green)"></i></div>
+      <div>
+        <div style="font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--white);margin-bottom:3px;">Trading Education Hub</div>
+        <div style="font-size:12px;color:var(--dim);">This page contains free, structured lessons on the Break &amp; Pullback strategy — no signup required. Read at your own pace.</div>
+      </div>
+    </div>
+    <div class="edu-stats">
+      <div class="est"><div class="est-n">5</div><div class="est-l">Lessons</div></div>
+      <div class="est"><div class="est-n">~30</div><div class="est-l">Min Read</div></div>
+      <div class="est"><div class="est-n">All</div><div class="est-l">Levels</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem" style="padding:96px 32px;">
+  <div class="ctr">
+    <div class="sh reveal">
+      <span class="lbl">The Core Problem</span>
+      <h2 class="sh-h">Why Breakout Traders<br>Keep Losing Money</h2>
+      <p class="sh-p">Breakout trading works — when executed correctly. Most retail traders make the same four structural mistakes.</p>
+    </div>
+    <div class="prob-grid reveal">
+      <div class="prob-card">
+        <div class="prob-n">01 / 04</div>
+        <h3 class="prob-h">Entering on the Break,<br>Not the Pullback</h3>
+        <p class="prob-p">Most traders jump in at the breakout candle. Professionals <strong>wait for the pullback retest</strong> — a cleaner entry with a tighter stop and better risk-reward. Level flip must be confirmed before acting.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-n">02 / 04</div>
+        <h3 class="prob-h">Trading Against<br>the Daily Trend</h3>
+        <p class="prob-p">A bearish H1 breakout against a <strong>bullish Daily structure</strong> means opposing institutional order flow. This single filter eliminates 30–40% of low-probability trades.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-n">03 / 04</div>
+        <h3 class="prob-h">No Capacity to Monitor<br>20+ Charts</h3>
+        <p class="prob-p">By the time you manually scan 20+ pairs for structural breaks and pullback zones — <strong>the move is already over</strong>. Manual multi-pair scanning is practically impossible at scale.</p>
+      </div>
+      <div class="prob-card">
+        <div class="prob-n">04 / 04</div>
+        <h3 class="prob-h">Entering Without<br>Momentum Confirmation</h3>
+        <p class="prob-p">Is USD strengthening, or just EUR weakening? The chart alone cannot tell you. Without <strong>Currency Strength analysis</strong>, you enter breakouts with no institutional backing.</p>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:1px;background:var(--ink2);padding:28px 32px;border-left:2px solid var(--green);display:flex;align-items:flex-start;gap:14px;">
+      <i data-lucide="corner-down-right" style="width:16px;height:16px;color:var(--green);margin-top:2px;flex-shrink:0;"></i>
+      <p style="font-size:13px;color:var(--mid);font-weight:300;line-height:1.8;"><strong style="color:var(--light);font-weight:500">The solution</strong> is a three-layer confluence framework: structural break + pullback retest, aligned with HTF daily trend, confirmed by real currency momentum. The lessons below teach each layer in full. The indicator automates all three.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FREE EDUCATION -->
+<section id="education" style="padding:0 32px 96px;">
+  <hr class="rule">
+  <div class="ctr" style="padding-top:80px;">
+    <div class="sh reveal">
+      <span class="lbl lbl-g">Free Education · 5 Lessons</span>
+      <h2 class="sh-h">Master the Break &amp; Pullback<br>Strategy — From First Principles</h2>
+      <p class="sh-p">Each lesson maps to one layer of the 3-layer confirmation system. Read these before using any indicator or placing any trade.</p>
+    </div>
+
+    <div class="ctr-md" style="padding:0;">
+
+      <!-- L1 -->
+      <div class="lesson reveal">
+        <div>
+          <div class="l-num">01</div>
+          <span class="l-layer">Layer 1</span>
         </div>
-        <div class="max-w-5xl mx-auto" style="position:relative;z-index:1;">
-            <div class="sr text-center mb-16">
-                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-400/20 bg-red-400/5 text-[10px] font-medium text-red-400 tracking-widest uppercase mb-6"><i data-lucide="alert-triangle" class="w-3 h-3"></i> The Breakout Trader's Problem</span>
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 grad-white">Why Breakout Traders<br>Keep Losing Money</h2>
-                <p class="text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">Breakout trading is one of the most powerful strategies — when done right. But most traders do it wrong. Here's exactly what's killing your results:</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="sr card-h p-8 rounded-2xl border border-white/5 bg-blue-950/40">
-                    <div class="w-12 h-12 rounded-xl bg-red-400/10 flex items-center justify-center mb-5"><i data-lucide="arrow-right" class="w-6 h-6 text-red-400"></i></div>
-                    <h3 class="text-lg font-bold tracking-tight mb-2">Entering on the Break — Not the Pullback</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed">Most traders see a breakout and <strong class="text-zinc-300">jump in immediately</strong>. This is the #1 mistake. Professional traders don't chase breakouts — they <strong class="text-zinc-300">wait for the pullback and retest</strong> of the broken level. The pullback confirms the level has flipped from resistance to support (or vice versa), giving you a safer entry with a tight stop loss.</p>
-                </div>
-                <div class="sr card-h p-8 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.1s">
-                    <div class="w-12 h-12 rounded-xl bg-red-400/10 flex items-center justify-center mb-5"><i data-lucide="shuffle" class="w-6 h-6 text-red-400"></i></div>
-                    <h3 class="text-lg font-bold tracking-tight mb-2">Trading Breakouts Against the Daily Trend</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed">A bearish breakout on EURUSD H1 might look perfect — but if the <strong class="text-zinc-300">Daily trend is bullish</strong>, you're fighting the higher timeframe momentum. Most traders never check HTF bias before entering. This single filter eliminates <strong class="text-zinc-300">30-40% of false breakout signals</strong>.</p>
-                </div>
-                <div class="sr card-h p-8 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.2s">
-                    <div class="w-12 h-12 rounded-xl bg-red-400/10 flex items-center justify-center mb-5"><i data-lucide="scan" class="w-6 h-6 text-red-400"></i></div>
-                    <h3 class="text-lg font-bold tracking-tight mb-2">Can't Monitor 20+ Charts Simultaneously</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed">By the time you manually scan EURUSD, GBPUSD, USDJPY, XAUUSD, and 15 other pairs for structural breaks, pullback zones, and trend alignment — <strong class="text-zinc-300">the move is already gone</strong>. You either miss it entirely or enter late. Manual multi-pair scanning is practically impossible for one person.</p>
-                </div>
-                <div class="sr card-h p-8 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.3s">
-                    <div class="w-12 h-12 rounded-xl bg-red-400/10 flex items-center justify-center mb-5"><i data-lucide="gauge" class="w-6 h-6 text-red-400"></i></div>
-                    <h3 class="text-lg font-bold tracking-tight mb-2">No Momentum Confirmation — Just "Hope"</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed">Price breaks a level, but <strong class="text-zinc-300">which currency is actually driving the move?</strong> Is USD genuinely strengthening, or is EUR just weakening? Without <strong class="text-zinc-300">Currency Strength analysis</strong>, you're entering breakouts that lack institutional momentum — the kind that reverse within minutes and stop you out.</p>
-                </div>
-            </div>
-            <div class="sr mt-12 p-6 rounded-xl border border-blue-400/10 bg-blue-400/5 text-center">
-                <p class="text-sm text-blue-200 font-light"><i data-lucide="lightbulb" class="w-4 h-4 inline-block mr-1 text-blue-400"></i><strong class="font-medium">The fix?</strong> Only trade breakouts that pass 3 tests: structural break + pullback retest, aligned with daily trend, backed by real currency momentum. That's exactly what Break Pullback automates.</p>
-            </div>
+        <div>
+          <div class="l-tag">Smart Money Concepts · ICT · Breakout Foundation</div>
+          <h3 class="l-h">Market Structure &amp; Break of Structure (BOS)</h3>
+          <p class="l-p"><strong>Market structure</strong> is the framework all professional price action trading is built on. In any trending market, price advances in <strong>higher highs and higher lows</strong> (uptrend) or <strong>lower highs and lower lows</strong> (downtrend). These swing points are structural levels — the price zones where institutional participants concentrate orders.</p>
+          <p class="l-p"><strong>Break of Structure (BOS)</strong> occurs when price breaks above a significant swing high in an uptrend, or below a swing low in a downtrend. This is not just any breakout — it is structural confirmation that institutional players have committed capital to a direction. In SMC and ICT methodology, BOS is the primary signal for trend continuation entries.</p>
+          <p class="l-p"><strong>Change of Character (CHOCH)</strong> is the counter — when price breaks structure in the opposite direction to the prevailing trend, signalling a potential reversal. Understanding the difference between BOS and CHOCH is the foundation of reading market intent.</p>
+          <div class="l-pills">
+            <span class="l-pill">Break of Structure</span>
+            <span class="l-pill">Change of Character</span>
+            <span class="l-pill">Swing Highs &amp; Lows</span>
+            <span class="l-pill">Smart Money Concepts</span>
+            <span class="l-pill">ICT Methodology</span>
+          </div>
+          <div class="l-bridge"><strong>How Break Pullback uses this:</strong> Layer 1 detects BOS formations in real time across 29+ pairs. Structural breaks are identified automatically — you focus only on the entry decision.</div>
         </div>
-    </section>
+      </div>
 
-    <!-- FREE EDUCATION — tightly coupled to product -->
-    <section id="education" class="relative py-24 md:py-32 px-6">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent"></div>
-        <div class="max-w-5xl mx-auto">
-            <div class="sr text-center mb-16">
-                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-400/20 bg-green-400/5 text-[10px] font-medium text-green-400 tracking-widest uppercase mb-6"><i data-lucide="gift" class="w-3 h-3"></i> 100% Free — Read Now, Trade Better Today</span>
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4"><span class="grad-text">Free Trading Education</span><br><span class="grad-white">Behind Break Pullback</span></h2>
-                <p class="text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">Understand the <strong class="text-white font-medium">exact theory</strong> that powers every signal Break Pullback generates. Each lesson below maps directly to one of the indicator's three confirmation layers.</p>
-            </div>
-
-            <!-- LESSON 1: Market Structure & BOS -->
-            <article class="sr mb-10">
-                <div class="card-h p-8 md:p-10 rounded-2xl border border-white/5 bg-blue-950/40">
-                    <div class="flex items-start gap-5">
-                        <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400/20 to-gold-600/10 border border-blue-400/20 flex items-center justify-center"><span class="text-lg font-bold text-blue-400 font-mono">01</span></div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-1 flex-wrap">
-                                <h3 class="text-xl font-bold tracking-tight">Market Structure & Break of Structure (BOS)</h3>
-                                <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold text-blue-400 bg-blue-400/10 border border-blue-400/20">→ LAYER 1</span>
-                            </div>
-                            <p class="text-xs text-blue-400 font-mono mb-4">SMART MONEY CONCEPTS • ICT • BREAKOUT TRADING FOUNDATION</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4"><strong class="text-white font-medium">Market structure</strong> is the backbone of all professional price action trading. In any trending market, price moves in a series of <strong class="text-zinc-300">higher highs and higher lows</strong> (uptrend) or <strong class="text-zinc-300">lower highs and lower lows</strong> (downtrend). These swing points are called <strong class="text-zinc-300">structural levels</strong> — they're the invisible lines that institutions respect.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4"><strong class="text-white font-medium">Break of Structure (BOS)</strong> occurs when price breaks above a significant swing high (in an uptrend) or below a significant swing low (in a downtrend). This is not just any breakout — it's a <strong class="text-zinc-300">structural break</strong> that confirms the trend is continuing. In Smart Money Concepts (SMC) and ICT methodology, BOS is the primary signal that institutional players have committed to a direction.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4"><strong class="text-white font-medium">Change of Character (CHOCH)</strong> is the opposite — when price breaks structure in the <em>opposite</em> direction of the current trend, it signals a potential reversal. For example, in an uptrend, if price breaks below the last swing low, that's a CHOCH — the character of the market has changed.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4"><strong class="text-white font-medium">Why BOS alone isn't enough:</strong> A structural break tells you the market is moving — but it doesn't tell you <em>when to enter</em>. If you buy the moment price breaks a swing high, you're often entering at the worst possible price, right before a pullback. That's where the next concept comes in.</p>
-                            <div class="flex flex-wrap gap-2 mb-5">
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Break of Structure</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Change of Character</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Swing Highs & Lows</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Smart Money Concepts</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">ICT Methodology</span>
-                            </div>
-                            <!-- Bridge to product -->
-                            <div class="bridge-card pl-4 py-3 rounded-r-lg bg-blue-400/5">
-                                <p class="text-xs text-blue-300 font-light"><i data-lucide="zap" class="w-3 h-3 inline-block mr-1 text-blue-400"></i><strong class="font-medium text-blue-200">How Break Pullback uses this:</strong> Layer 1 of the indicator automatically detects BOS formations in real time across multiple pairs — you never have to manually identify structural breaks again.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- LESSON 2: Pullback & Retest -->
-            <article class="sr mb-10">
-                <div class="card-h p-8 md:p-10 rounded-2xl border border-white/5 bg-blue-950/40">
-                    <div class="flex items-start gap-5">
-                        <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400/20 to-gold-600/10 border border-blue-400/20 flex items-center justify-center"><span class="text-lg font-bold text-blue-400 font-mono">02</span></div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-1 flex-wrap">
-                                <h3 class="text-xl font-bold tracking-tight">The Pullback & Retest Entry</h3>
-                                <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold text-blue-400 bg-blue-400/10 border border-blue-400/20">→ LAYER 1</span>
-                            </div>
-                            <p class="text-xs text-blue-400 font-mono mb-4">BREAK & RETEST STRATEGY • TREND CONTINUATION • HIGH-PROBABILITY ENTRY</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">Here's the concept that separates losing breakout traders from profitable ones: <strong class="text-white font-medium">never enter on the initial break — wait for the pullback.</strong></p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">When price breaks a structural level (BOS), that level changes its function. A swing high that was <strong class="text-zinc-300">resistance</strong> becomes <strong class="text-zinc-300">support</strong> once broken. But the market rarely respects this flip immediately. Instead, price typically <strong class="text-zinc-300">pulls back</strong> to retest the broken level before continuing in the breakout direction.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">This pullback (also called a <strong class="text-zinc-300">retest</strong> or <strong class="text-zinc-300">return to liquidity</strong> in ICT terms) is your <strong class="text-white font-medium">high-probability entry zone</strong>. Here's why:</p>
-                            <ul class="text-sm text-zinc-400 font-light leading-relaxed mb-4 space-y-2 ml-4">
-                                <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-zinc-300">Better entry price:</strong> You're entering near the broken level, not at the top of the breakout candle. Your risk-reward ratio improves dramatically.</span></li>
-                                <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-zinc-300">Tighter stop loss:</strong> Place your stop just below the retest zone. If the level doesn't hold, you know immediately — small loss.</span></li>
-                                <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-zinc-300">Confirmation:</strong> If price pulls back and <em>bounces</em> off the broken level, it confirms the flip is real. Institutions use these zones to add to their positions.</span></li>
-                                <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span><span><strong class="text-zinc-300">No FOMO:</strong> You're not chasing. You're waiting for the market to come to you. This eliminates emotional, impulsive entries.</span></li>
-                            </ul>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">This <strong class="text-white font-medium">Break → Pullback → Continuation</strong> pattern is the core of trend-following strategies used by hedge funds and prop firms worldwide. It works on Forex (EURUSD, GBPUSD, USDJPY), Gold (XAUUSD), and all liquid markets — on timeframes from M15 to D1.</p>
-                            <div class="flex flex-wrap gap-2 mb-5">
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Pullback Entry</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Retest Strategy</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Level Flip</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Return to Liquidity</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Trend Continuation</span>
-                            </div>
-                            <div class="bridge-card pl-4 py-3 rounded-r-lg bg-blue-400/5">
-                                <p class="text-xs text-blue-300 font-light"><i data-lucide="zap" class="w-3 h-3 inline-block mr-1 text-blue-400"></i><strong class="font-medium text-blue-200">How Break Pullback uses this:</strong> After detecting a BOS, Layer 1 monitors price for a valid pullback to the broken level. Only when the pullback completes does it generate a signal — so you never chase, you only get pullback entries.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- LESSON 3: HTF Daily Bias -->
-            <article class="sr mb-10">
-                <div class="card-h p-8 md:p-10 rounded-2xl border border-white/5 bg-blue-950/40">
-                    <div class="flex items-start gap-5">
-                        <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400/20 to-blue-600/10 border border-blue-400/20 flex items-center justify-center"><span class="text-lg font-bold text-blue-400 font-mono">03</span></div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-1 flex-wrap">
-                                <h3 class="text-xl font-bold tracking-tight">HTF Daily Bias & Three Candle Monitor</h3>
-                                <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold text-blue-400 bg-blue-400/10 border border-blue-400/20">→ LAYER 2</span>
-                            </div>
-                            <p class="text-xs text-blue-400 font-mono mb-4">HIGHER TIMEFRAME ANALYSIS • TREND FILTER • DIRECTIONAL BIAS</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4"><strong class="text-white font-medium">Higher Timeframe (HTF) bias</strong> is the second critical filter that most retail traders completely ignore. Here's the principle: <strong class="text-zinc-300">a breakout on H1 that aligns with the Daily trend has a fundamentally higher probability</strong> than a breakout against it.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">Think of it this way — the Daily timeframe represents the <strong class="text-zinc-300">institutional view</strong>. Banks and funds make decisions based on daily and weekly charts. If the daily trend is bullish on EURUSD, institutional orders are skewed to the buy side. Taking a bearish breakout on H1 against this daily bias means you're fighting the biggest players in the market.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">The <strong class="text-white font-medium">Three Candle Monitor</strong> is a simple but powerful method to read daily bias: analyze the last 3 daily candles to determine if the dominant direction is bullish or bearish. If the last 3 candles show higher closes → bullish bias. Lower closes → bearish bias. This gives you a clear, unambiguous directional filter before taking <em>any</em> breakout trade.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4"><strong class="text-white font-medium">Impact on your trading:</strong> Adding HTF Daily Bias as a filter typically <strong class="text-zinc-300">eliminates 30-40% of your trades</strong> — but the remaining 60-70% have significantly higher win rates. You trade less, but win more. Quality over quantity.</p>
-                            <div class="flex flex-wrap gap-2 mb-5">
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">HTF Bias</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Daily Trend</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Three Candle Monitor</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Top-Down Analysis</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Trend Alignment</span>
-                            </div>
-                            <div class="bridge-card pl-4 py-3 rounded-r-lg bg-blue-400/5 border-l-blue-400/30">
-                                <p class="text-xs text-blue-300 font-light"><i data-lucide="zap" class="w-3 h-3 inline-block mr-1 text-blue-400"></i><strong class="font-medium text-blue-200">How Break Pullback uses this:</strong> Layer 2 automatically reads the HTF Daily Bias using a Three Candle Monitor. Every breakout signal is filtered — if it doesn't align with the daily direction, you simply don't see it. No more counter-trend mistakes.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- LESSON 4: Currency Strength Index -->
-            <article class="sr mb-10">
-                <div class="card-h p-8 md:p-10 rounded-2xl border border-white/5 bg-blue-950/40">
-                    <div class="flex items-start gap-5">
-                        <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-400/20 to-emerald-600/10 border border-emerald-400/20 flex items-center justify-center"><span class="text-lg font-bold text-emerald-400 font-mono">04</span></div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-1 flex-wrap">
-                                <h3 class="text-xl font-bold tracking-tight">Currency Strength Index (CSI) & Rate of Change</h3>
-                                <span class="px-2 py-0.5 rounded text-[9px] font-mono font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-400/20">→ LAYER 3</span>
-                            </div>
-                            <p class="text-xs text-emerald-400 font-mono mb-4">CURRENCY STRENGTH • MOMENTUM ANALYSIS • RATE OF CHANGE (ROC)</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">Here's a question most traders never ask: <strong class="text-white font-medium">When EURUSD breaks out to the upside, is EUR actually getting stronger — or is USD getting weaker?</strong> The chart can't tell you. It only shows the <em>relationship</em> between two currencies. But understanding <em>which side is driving the move</em> is the difference between a high-probability trade and a fake-out.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4"><strong class="text-white font-medium">Currency Strength Index (CSI)</strong> solves this by measuring the <strong class="text-zinc-300">individual strength of each currency</strong> independently. It uses <strong class="text-zinc-300">Rate of Change (ROC)</strong> — comparing the current price of each currency (against a basket of other currencies) to its price N periods ago. A positive ROC means the currency is strengthening; negative means weakening.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">For example, if you see a bullish breakout on GBPUSD and CSI shows GBP is the <strong class="text-zinc-300">strongest currency</strong> while USD is the <strong class="text-zinc-300">weakest</strong> — that's a high-conviction trade. Real institutional money is flowing from USD into GBP. But if GBP is actually weak and the breakout is just noise — you avoid it entirely.</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">CSI also helps you <strong class="text-zinc-300">select the best pairs to trade</strong>. Instead of randomly picking EURUSD or GBPUSD, you scan for the strongest vs. weakest currency and trade that pair. This is how professional fund managers allocate across Forex — by following momentum, not guessing.</p>
-                            <div class="flex flex-wrap gap-2 mb-5">
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Currency Strength</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Rate of Change</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Momentum Confirmation</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Pair Selection</span>
-                                <span class="px-2.5 py-1 rounded-md bg-blue-900/50 text-[10px] font-mono text-zinc-400">Strong vs Weak</span>
-                            </div>
-                            <div class="bridge-card pl-4 py-3 rounded-r-lg bg-emerald-400/5 border-l-emerald-400/30">
-                                <p class="text-xs text-emerald-300 font-light"><i data-lucide="zap" class="w-3 h-3 inline-block mr-1 text-emerald-400"></i><strong class="font-medium text-emerald-200">How Break Pullback uses this:</strong> Layer 3 runs a real-time Currency Strength Index using ROC. A breakout signal only fires when the driving currency is genuinely strong. This eliminates breakouts that lack real momentum — the final confirmation before you act.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- LESSON 5: Putting It All Together -->
-            <article class="sr mb-10">
-                <div class="card-h p-8 md:p-10 rounded-2xl border border-blue-400/10 bg-blue-400/[0.03]">
-                    <div class="flex items-start gap-5">
-                        <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400/20 to-gold-600/10 border border-blue-400/20 flex items-center justify-center"><span class="text-lg font-bold text-blue-400 font-mono">05</span></div>
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold tracking-tight mb-1">The 3-Layer Confluence Model</h3>
-                            <p class="text-xs text-blue-400 font-mono mb-4">PUTTING IT ALL TOGETHER • THE COMPLETE FRAMEWORK</p>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">No single concept above is a "holy grail" on its own. The magic happens when you <strong class="text-white font-medium">combine all three layers as confluence filters</strong>. Here's the complete decision framework:</p>
-                            <div class="space-y-3 mb-5">
-                                <div class="flex items-start gap-3 p-3 rounded-lg bg-blue-900/50/50">
-                                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-400/20 flex items-center justify-center text-[10px] font-bold text-blue-400">1</span>
-                                    <p class="text-sm text-zinc-300 font-light"><strong class="font-medium text-white">Did price break a key structural level?</strong> → BOS confirmed? Has price pulled back to retest? If NO → <span class="text-red-400">No trade.</span></p>
-                                </div>
-                                <div class="flex items-start gap-3 p-3 rounded-lg bg-blue-900/50/50">
-                                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-400/20 flex items-center justify-center text-[10px] font-bold text-blue-400">2</span>
-                                    <p class="text-sm text-zinc-300 font-light"><strong class="font-medium text-white">Is this aligned with the Daily trend?</strong> → HTF bias confirms direction? If NO → <span class="text-red-400">No trade.</span></p>
-                                </div>
-                                <div class="flex items-start gap-3 p-3 rounded-lg bg-blue-900/50/50">
-                                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-400/20 flex items-center justify-center text-[10px] font-bold text-emerald-400">3</span>
-                                    <p class="text-sm text-zinc-300 font-light"><strong class="font-medium text-white">Is the momentum backed by currency strength?</strong> → CSI confirms the driving currency is strong? If NO → <span class="text-red-400">No trade.</span></p>
-                                </div>
-                                <div class="flex items-start gap-3 p-3 rounded-lg bg-green-400/5 border border-green-400/20">
-                                    <span class="flex-shrink-0 w-6 h-6 rounded-full bg-green-400 flex items-center justify-center text-[10px] font-bold text-black">✓</span>
-                                    <p class="text-sm text-green-300 font-medium">All three confirmed? → <strong>High-probability Break Pullback setup. Execute.</strong></p>
-                                </div>
-                            </div>
-                            <p class="text-sm text-zinc-400 font-light leading-relaxed mb-5">This framework is what separates <strong class="text-zinc-300">retail gamblers</strong> from <strong class="text-zinc-300">systematic traders</strong>. You're not guessing. You're not hoping. You're checking three objective conditions before every single trade. The result: fewer trades, higher win rate, better risk-reward, and — most importantly — <strong class="text-white font-medium">consistency</strong>.</p>
-                            <div class="bridge-card pl-4 py-3 rounded-r-lg bg-blue-400/5 border-l-blue-400/30">
-                                <p class="text-xs text-blue-300 font-light"><i data-lucide="zap" class="w-3 h-3 inline-block mr-1 text-blue-400"></i><strong class="font-medium text-blue-200">How Break Pullback uses this:</strong> The indicator runs this exact 3-layer check automatically, simultaneously across 20+ pairs, in real time. You see only the setups where all three layers align. "Smart. Simple. Fast."</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <div class="sr text-center mt-16">
-                <p class="text-zinc-400 font-light text-sm mb-6">This complete education is included <strong class="text-white font-medium">free</strong> with Break Pullback on MQL5.</p>
-                <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="shimmer-btn inline-flex items-center gap-2 text-white font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-xl hover:opacity-90 transition-all duration-300">
-                    Get Break Pullback on MQL5 <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </a>
-            </div>
+      <!-- L2 -->
+      <div class="lesson reveal">
+        <div>
+          <div class="l-num">02</div>
+          <span class="l-layer">Layer 1</span>
         </div>
-    </section>
-
-    <!-- 3-LAYER SYSTEM SECTION -->
-    <section id="layers" class="relative py-24 md:py-32 px-6 overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="width:700px;height:700px;background:radial-gradient(ellipse at center, rgba(78,158,255,0.04) 0%, rgba(78,158,255,0.02) 40%, transparent 70%);transform:translate(-50%,-50%);"></div>
-        <div class="relative max-w-5xl mx-auto">
-            <div class="sr text-center mb-16">
-                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-400/20 bg-blue-400/5 text-[10px] font-medium text-blue-400 tracking-widest uppercase mb-6"><i data-lucide="layers" class="w-3 h-3"></i> How It Works</span>
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 grad-white">Three Layers.<br><span class="grad-text">One Signal.</span></h2>
-                <p class="text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">Every Break Pullback signal passes through three independent confirmation layers. Only when <strong class="text-white font-medium">all three align</strong> do you see a setup.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6 mb-16">
-                <!-- Layer 1 -->
-                <div class="sr card-h p-8 rounded-2xl border border-blue-400/10 bg-blue-950/40 text-center relative overflow-hidden">
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400/60 to-blue-400/20"></div>
-                    <p class="text-[10px] font-mono font-bold text-blue-400 tracking-widest mb-4">LAYER 1</p>
-                    <div class="w-16 h-16 rounded-2xl bg-blue-400/10 flex items-center justify-center mx-auto mb-5">
-                        <i data-lucide="git-branch" class="w-7 h-7 text-blue-400"></i>
-                    </div>
-                    <h3 class="text-base font-bold tracking-tight mb-2">Structural Break<br>& Pullback Detector</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">Identifies BOS formations and monitors for valid pullback retracements to the broken level in real time.</p>
-                    <div class="text-left space-y-2">
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0 mt-0.5"></i>Break of Structure detection</p>
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0 mt-0.5"></i>Pullback retest monitoring</p>
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0 mt-0.5"></i>Multi-pair simultaneous scan</p>
-                    </div>
-                </div>
-
-                <!-- Layer 2 -->
-                <div class="sr card-h p-8 rounded-2xl border border-blue-400/10 bg-blue-950/40 text-center relative overflow-hidden" style="transition-delay:.1s">
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400/60 to-blue-400/20"></div>
-                    <p class="text-[10px] font-mono font-bold text-blue-400 tracking-widest mb-4">LAYER 2</p>
-                    <div class="w-16 h-16 rounded-2xl bg-blue-400/10 flex items-center justify-center mx-auto mb-5">
-                        <i data-lucide="compass" class="w-7 h-7 text-blue-400"></i>
-                    </div>
-                    <h3 class="text-base font-bold tracking-tight mb-2">HTF Daily Bias<br>Three Candle Monitor</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">Reads the Daily timeframe directional bias automatically and filters out counter-trend signals.</p>
-                    <div class="text-left space-y-2">
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0 mt-0.5"></i>Automatic daily trend reading</p>
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0 mt-0.5"></i>Three Candle Monitor method</p>
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0 mt-0.5"></i>Counter-trend signal rejection</p>
-                    </div>
-                </div>
-
-                <!-- Layer 3 -->
-                <div class="sr card-h p-8 rounded-2xl border border-emerald-400/10 bg-blue-950/40 text-center relative overflow-hidden" style="transition-delay:.2s">
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400/60 to-emerald-400/20"></div>
-                    <p class="text-[10px] font-mono font-bold text-emerald-400 tracking-widest mb-4">LAYER 3</p>
-                    <div class="w-16 h-16 rounded-2xl bg-emerald-400/10 flex items-center justify-center mx-auto mb-5">
-                        <i data-lucide="activity" class="w-7 h-7 text-emerald-400"></i>
-                    </div>
-                    <h3 class="text-base font-bold tracking-tight mb-2">Currency Strength<br>Index (ROC)</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">Measures real-time currency strength using Rate of Change to confirm institutional momentum.</p>
-                    <div class="text-left space-y-2">
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 flex-shrink-0 mt-0.5"></i>ROC-based strength measurement</p>
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 flex-shrink-0 mt-0.5"></i>Strongest vs weakest identification</p>
-                        <p class="text-[11px] text-zinc-500 flex items-start gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 flex-shrink-0 mt-0.5"></i>Momentum confirmation filter</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Visual -->
-            <div class="sr relative rounded-2xl border border-blue-500/20 overflow-hidden bg-blue-950/40 p-8">
-                <div class="flex flex-wrap items-center gap-3 mb-6">
-                    <span class="px-3 py-1 rounded-full bg-blue-400/10 border border-blue-400/20 text-[10px] font-mono text-blue-400">LAYER 1: BOS + PULLBACK ✓</span>
-                    <span class="px-3 py-1 rounded-full bg-blue-400/10 border border-blue-400/20 text-[10px] font-mono text-blue-400">LAYER 2: DAILY BIAS BULLISH ✓</span>
-                    <span class="px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-[10px] font-mono text-emerald-400">LAYER 3: GBP STRONG / USD WEAK ✓</span>
-                </div>
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="rounded-xl border border-blue-500/20 bg-blue-900/20 p-5 text-center">
-                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-3"><i data-lucide="activity" class="w-5 h-5 text-blue-400"></i></div>
-                        <p class="text-[10px] font-mono text-blue-400 tracking-widest uppercase mb-1">Layer 1</p>
-                        <p class="text-sm font-bold text-white">BOS + Pullback</p>
-                        <p class="text-[11px] text-zinc-500 mt-1">Structural break confirmed with retest</p>
-                    </div>
-                    <div class="rounded-xl border border-blue-500/20 bg-blue-900/20 p-5 text-center">
-                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-3"><i data-lucide="compass" class="w-5 h-5 text-blue-400"></i></div>
-                        <p class="text-[10px] font-mono text-blue-400 tracking-widest uppercase mb-1">Layer 2</p>
-                        <p class="text-sm font-bold text-white">HTF Daily Bias</p>
-                        <p class="text-[11px] text-zinc-500 mt-1">Aligned with dominant daily trend</p>
-                    </div>
-                    <div class="rounded-xl border border-emerald-500/20 bg-emerald-900/10 p-5 text-center">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-3"><i data-lucide="bar-chart-2" class="w-5 h-5 text-emerald-400"></i></div>
-                        <p class="text-[10px] font-mono text-emerald-400 tracking-widest uppercase mb-1">Layer 3</p>
-                        <p class="text-sm font-bold text-white">Currency Strength</p>
-                        <p class="text-[11px] text-zinc-500 mt-1">Real momentum behind the move</p>
-                    </div>
-                </div>
-                <p class="text-xs text-zinc-500 mt-5">Running on MetaTrader 5 • EURUSD, GBPUSD, USDJPY, XAUUSD, and 29 pairs scanned simultaneously</p>
-            </div>
+        <div>
+          <div class="l-tag">Break &amp; Retest · Trend Continuation · High-Probability Entry</div>
+          <h3 class="l-h">The Pullback &amp; Retest Entry</h3>
+          <p class="l-p">The single principle that separates profitable breakout traders from the rest: <strong>never enter on the initial break — wait for the pullback.</strong></p>
+          <p class="l-p">When price breaks a structural level, that level flips function. A swing high that was <strong>resistance becomes support</strong> once broken. Price typically returns to retest this flipped level before continuing. This pullback is the high-probability entry window — better price, tighter stop, and confirmation that the flip held.</p>
+          <p class="l-p">The <strong>Break → Pullback → Continuation</strong> sequence is the structure of every institutional trend-following trade. It works on Forex, Gold, and all liquid markets across M15 to D1.</p>
+          <div class="l-pills">
+            <span class="l-pill">Pullback Entry</span>
+            <span class="l-pill">Retest Strategy</span>
+            <span class="l-pill">Level Flip</span>
+            <span class="l-pill">Return to Liquidity</span>
+            <span class="l-pill">Trend Continuation</span>
+          </div>
+          <div class="l-bridge"><strong>How Break Pullback uses this:</strong> After detecting BOS, Layer 1 monitors price for a valid pullback. The signal fires only when the retest is confirmed — eliminating chase entries entirely.</div>
         </div>
-    </section>
+      </div>
 
-    <!-- FEATURES -->
-    <section id="features" class="relative py-24 md:py-32 px-6">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div class="max-w-5xl mx-auto">
-            <div class="sr text-center mb-16">
-                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-400/20 bg-blue-400/5 text-[10px] font-medium text-blue-400 tracking-widest uppercase mb-6"><i data-lucide="package" class="w-3 h-3"></i> What You Get</span>
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 grad-white">Built for Structure Traders.<br><span class="grad-text">"Smart. Simple. Fast."</span></h2>
-            </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <div class="sr card-h p-6 rounded-2xl border border-white/5 bg-blue-950/40">
-                    <div class="w-10 h-10 rounded-lg bg-blue-400/10 flex items-center justify-center mb-4"><i data-lucide="scan-search" class="w-5 h-5 text-blue-400"></i></div>
-                    <h3 class="text-sm font-bold tracking-tight mb-1.5">Multi-Pair Auto Scanner</h3>
-                    <p class="text-xs text-zinc-400 font-light leading-relaxed">Scans 20+ pairs simultaneously — EURUSD, GBPUSD, USDJPY, XAUUSD and more. No manual chart hopping.</p>
-                </div>
-                <div class="sr card-h p-6 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.05s">
-                    <div class="w-10 h-10 rounded-lg bg-blue-400/10 flex items-center justify-center mb-4"><i data-lucide="git-branch" class="w-5 h-5 text-blue-400"></i></div>
-                    <h3 class="text-sm font-bold tracking-tight mb-1.5">BOS & CHOCH Detection</h3>
-                    <p class="text-xs text-zinc-400 font-light leading-relaxed">Automatically identifies Break of Structure and Change of Character in real time on any timeframe.</p>
-                </div>
-                <div class="sr card-h p-6 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.1s">
-                    <div class="w-10 h-10 rounded-lg bg-blue-400/10 flex items-center justify-center mb-4"><i data-lucide="undo-2" class="w-5 h-5 text-blue-400"></i></div>
-                    <h3 class="text-sm font-bold tracking-tight mb-1.5">Pullback Retest Monitor</h3>
-                    <p class="text-xs text-zinc-400 font-light leading-relaxed">Waits for price to pull back and retest the broken level — only then triggers the entry signal.</p>
-                </div>
-                <div class="sr card-h p-6 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.15s">
-                    <div class="w-10 h-10 rounded-lg bg-blue-400/10 flex items-center justify-center mb-4"><i data-lucide="compass" class="w-5 h-5 text-blue-400"></i></div>
-                    <h3 class="text-sm font-bold tracking-tight mb-1.5">HTF Daily Bias Filter</h3>
-                    <p class="text-xs text-zinc-400 font-light leading-relaxed">Three Candle Monitor reads daily trend direction. Counter-trend signals are automatically rejected.</p>
-                </div>
-                <div class="sr card-h p-6 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.2s">
-                    <div class="w-10 h-10 rounded-lg bg-emerald-400/10 flex items-center justify-center mb-4"><i data-lucide="activity" class="w-5 h-5 text-emerald-400"></i></div>
-                    <h3 class="text-sm font-bold tracking-tight mb-1.5">Currency Strength Index</h3>
-                    <p class="text-xs text-zinc-400 font-light leading-relaxed">Real-time ROC-based currency strength. Confirms which currency is driving the breakout move.</p>
-                </div>
-
-
-
-                <div class="sr card-h p-6 rounded-2xl border border-white/5 bg-blue-950/40" style="transition-delay:.4s">
-                    <div class="w-10 h-10 rounded-lg bg-blue-400/10 flex items-center justify-center mb-4"><i data-lucide="book-open" class="w-5 h-5 text-blue-400"></i></div>
-                    <h3 class="text-sm font-bold tracking-tight mb-1.5">Free Education Bundle</h3>
-                    <p class="text-xs text-zinc-400 font-light leading-relaxed">Complete BOS, Pullback, HTF Bias, and CSI education included — understand every signal you take.</p>
-                    <div class="mt-3 flex flex-col gap-1.5">
-                        <a href="https://t.me/abcdwave" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[11px] text-blue-400 hover:text-blue-300 transition-colors font-medium">
-                            <svg class="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                            Chat on Telegram: @abcdwave
-                        </a>
-                        <span class="text-[11px] text-zinc-500">💡 Live Trading Meeting also available</span>
-                    </div>
-                </div>
-            </div>
+      <!-- L3 -->
+      <div class="lesson reveal">
+        <div>
+          <div class="l-num">03</div>
+          <span class="l-layer g">Layer 2</span>
         </div>
-    </section>
-
-    <!-- WHO IS THIS FOR -->
-    <section class="relative py-24 md:py-32 px-6">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div class="max-w-5xl mx-auto">
-            <div class="sr text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 grad-white">Who Is Break Pullback<br><span class="grad-text">Built For?</span></h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="sr card-h p-8 rounded-2xl border border-white/5 bg-blue-950/40 text-center">
-                    <div class="w-16 h-16 rounded-2xl bg-green-400/10 flex items-center justify-center mx-auto mb-5"><i data-lucide="sprout" class="w-7 h-7 text-green-400"></i></div>
-                    <h3 class="text-lg font-bold tracking-tight mb-2">SMC & ICT Learners</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">You're learning Smart Money Concepts, ICT, or market structure but struggling to <strong class="text-zinc-300">spot BOS and pullbacks in real time</strong>. The free education fills your knowledge gaps, and the tool catches what you miss.</p>
-                    <ul class="text-xs text-zinc-500 space-y-2 text-left">
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-green-400 flex-shrink-0"></i> Learn BOS, CHOCH, pullback concepts</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-green-400 flex-shrink-0"></i> See the theory on live charts</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-green-400 flex-shrink-0"></i> Build confidence while learning</li>
-                    </ul>
-                </div>
-                <div class="sr card-h p-8 rounded-2xl border border-blue-400/10 bg-blue-400/5 text-center relative" style="transition-delay:.1s">
-                    <div class="absolute -top-px left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
-                    <div class="w-16 h-16 rounded-2xl bg-blue-400/10 flex items-center justify-center mx-auto mb-5"><i data-lucide="rotate-ccw" class="w-7 h-7 text-blue-400"></i></div>
-                    <p class="text-[10px] text-blue-400 font-mono tracking-widest uppercase mb-2">Most Popular</p>
-                    <h3 class="text-lg font-bold tracking-tight mb-2">Failing Breakout Traders</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">You keep entering breakouts too early, getting stopped out on pullbacks, or trading against the trend. <strong class="text-blue-300">Break Pullback fixes all three at once.</strong></p>
-                    <ul class="text-xs text-zinc-500 space-y-2 text-left">
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0"></i> Stops chasing — only pullback entries</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0"></i> HTF filter stops counter-trend trades</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0"></i> CSI confirms real momentum</li>
-                    </ul>
-                </div>
-                <div class="sr card-h p-8 rounded-2xl border border-white/5 bg-blue-950/40 text-center" style="transition-delay:.2s">
-                    <div class="w-16 h-16 rounded-2xl bg-blue-400/10 flex items-center justify-center mx-auto mb-5"><i data-lucide="crown" class="w-7 h-7 text-blue-400"></i></div>
-                    <h3 class="text-lg font-bold tracking-tight mb-2">Structure Professionals</h3>
-                    <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">You already trade BOS + pullback manually but <strong class="text-zinc-300">Can't keep track of many pairs</strong> at once. Break Pullback becomes your automated assistant that never misses a setup.</p>
-                    <ul class="text-xs text-zinc-500 space-y-2 text-left">
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0"></i> Automate multi-pair scanning</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0"></i> Add CSI confluence to your process</li>
-                        <li class="flex items-center gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 flex-shrink-0"></i> Save 2+ hours daily</li>
-                    </ul>
-                </div>
-            </div>
+        <div>
+          <div class="l-tag">Higher Timeframe Analysis · Trend Filter · Directional Bias</div>
+          <h3 class="l-h">HTF Daily Bias &amp; Three Candle Monitor</h3>
+          <p class="l-p"><strong>HTF bias</strong> is the second critical filter most retail traders ignore entirely. A breakout on H1 that aligns with the Daily trend has fundamentally higher probability than one taken against it.</p>
+          <p class="l-p">The Daily timeframe represents the <strong>institutional view</strong>. Banks and funds build positions from daily and weekly charts. Taking a bearish H1 breakout against a bullish Daily structure means standing opposite the largest market participants.</p>
+          <p class="l-p">The <strong>Three Candle Monitor</strong> provides an unambiguous bias reading: examine the last three daily candles. Higher closes indicate bullish bias; lower closes indicate bearish. This filter typically eliminates 30–40% of trades — but the remaining entries carry meaningfully higher win rates.</p>
+          <div class="l-pills">
+            <span class="l-pill">HTF Bias</span>
+            <span class="l-pill">Daily Trend</span>
+            <span class="l-pill">Three Candle Monitor</span>
+            <span class="l-pill">Top-Down Analysis</span>
+          </div>
+          <div class="l-bridge"><strong>How Break Pullback uses this:</strong> Layer 2 reads HTF Daily Bias automatically. Counter-trend signals never reach the trader.</div>
         </div>
-    </section>
+      </div>
 
-    <!-- COMPARISON -->
-    <section class="relative py-24 md:py-32 px-6">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div class="max-w-4xl mx-auto">
-            <div class="sr text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 grad-white">Why Most Breakout<br><span class="grad-text">Indicators Fail</span></h2>
-                <p class="text-zinc-400 font-light max-w-xl mx-auto">See the difference between a raw breakout arrow and a real 3-layer confirmed setup.</p>
-            </div>
-            <div class="sr overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead><tr class="border-b border-blue-500/20">
-                        <th class="text-left py-4 px-4 text-xs font-medium text-zinc-500 tracking-wider uppercase">Feature</th>
-                        <th class="text-center py-4 px-4 text-xs font-bold text-blue-400 tracking-wider uppercase">Break Pullback</th>
-                        <th class="text-center py-4 px-4 text-xs font-medium text-zinc-500 tracking-wider uppercase">Typical Breakout Indicator</th>
-                    </tr></thead>
-                    <tbody>
-                        <tr class="border-b border-white/5"><td class="py-4 px-4 text-zinc-300 font-light">Pullback Retest Entry (Not Chase)</td><td class="py-4 px-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mx-auto"></i></td><td class="py-4 px-4 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400/50 mx-auto"></i></td></tr>
-                        <tr class="border-b border-white/5"><td class="py-4 px-4 text-zinc-300 font-light">HTF Daily Bias Filter</td><td class="py-4 px-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mx-auto"></i></td><td class="py-4 px-4 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400/50 mx-auto"></i></td></tr>
-                        <tr class="border-b border-white/5"><td class="py-4 px-4 text-zinc-300 font-light">Currency Strength Confirmation</td><td class="py-4 px-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mx-auto"></i></td><td class="py-4 px-4 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400/50 mx-auto"></i></td></tr>
-                        <tr class="border-b border-white/5"><td class="py-4 px-4 text-zinc-300 font-light">Multi-Pair Scanner</td><td class="py-4 px-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mx-auto"></i></td><td class="py-4 px-4 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400/50 mx-auto"></i></td></tr>
-                        <tr class="border-b border-white/5"><td class="py-4 px-4 text-zinc-300 font-light">BOS/CHOCH Structure Detection</td><td class="py-4 px-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mx-auto"></i></td><td class="py-4 px-4 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400/50 mx-auto"></i></td></tr>
-                        
-                        <tr><td class="py-4 px-4 text-zinc-300 font-light">Free Trading Education Included</td><td class="py-4 px-4 text-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mx-auto"></i></td><td class="py-4 px-4 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400/50 mx-auto"></i></td></tr>
-                    </tbody>
-                </table>
-            </div>
+      <!-- L4 -->
+      <div class="lesson reveal">
+        <div>
+          <div class="l-num">04</div>
+          <span class="l-layer g">Layer 3</span>
         </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="relative py-24 md:py-32 px-6">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div class="max-w-3xl mx-auto">
-            <div class="sr text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold tracking-tighter mb-4 grad-white">Frequently Asked<br><span class="grad-text">Questions</span></h2>
-            </div>
-            <div class="sr space-y-3" id="faqBox">
-                <div class="fi border border-white/5 rounded-xl overflow-hidden">
-                    <button class="ft w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors" aria-expanded="false"><span class="text-sm font-medium pr-4">What is a Break and Pullback strategy in forex trading?</span><i data-lucide="plus" class="w-5 h-5 text-zinc-500 flex-shrink-0 fi-icon transition-transform duration-300"></i></button>
-                    <div class="fc hidden px-6 pb-6"><p class="text-sm text-zinc-400 font-light leading-relaxed">A Break and Pullback strategy involves waiting for price to break a key structural level (like a swing high or low), then waiting for price to pull back and retest that broken level before entering in the direction of the breakout. This retest confirms the level has flipped from resistance to support (or vice versa), giving a high-probability entry with a clear invalidation point and tight stop loss.</p></div>
-                </div>
-                <div class="fi border border-white/5 rounded-xl overflow-hidden">
-                    <button class="ft w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors" aria-expanded="false"><span class="text-sm font-medium pr-4">What is Break of Structure (BOS) in trading?</span><i data-lucide="plus" class="w-5 h-5 text-zinc-500 flex-shrink-0 fi-icon transition-transform duration-300"></i></button>
-                    <div class="fc hidden px-6 pb-6"><p class="text-sm text-zinc-400 font-light leading-relaxed">Break of Structure (BOS) occurs when price breaks above a previous swing high in an uptrend or below a previous swing low in a downtrend. It confirms that the current trend is continuing. BOS is a core concept in Smart Money Concepts (SMC) and ICT-style trading, used by institutional traders to identify trend continuation setups.</p></div>
-                </div>
-                <div class="fi border border-white/5 rounded-xl overflow-hidden">
-                    <button class="ft w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors" aria-expanded="false"><span class="text-sm font-medium pr-4">Why is HTF Daily Bias important for breakout trading?</span><i data-lucide="plus" class="w-5 h-5 text-zinc-500 flex-shrink-0 fi-icon transition-transform duration-300"></i></button>
-                    <div class="fc hidden px-6 pb-6"><p class="text-sm text-zinc-400 font-light leading-relaxed">Higher Timeframe Daily Bias ensures you only take breakout entries that align with the dominant daily trend direction. Trading breakouts against the daily trend has a much lower success rate because you're fighting institutional order flow. By filtering for daily bias using the Three Candle Monitor, you eliminate a large percentage of false breakout signals.</p></div>
-                </div>
-                <div class="fi border border-white/5 rounded-xl overflow-hidden">
-                    <button class="ft w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors" aria-expanded="false"><span class="text-sm font-medium pr-4">How does Currency Strength Index improve breakout entries?</span><i data-lucide="plus" class="w-5 h-5 text-zinc-500 flex-shrink-0 fi-icon transition-transform duration-300"></i></button>
-                    <div class="fc hidden px-6 pb-6"><p class="text-sm text-zinc-400 font-light leading-relaxed">Currency Strength Index (CSI) measures the relative strength of individual currencies using Rate of Change (ROC). When a breakout occurs, confirming that the driving currency is genuinely strong (and the paired currency is weak) adds a momentum confirmation layer. This prevents entering breakouts that lack real institutional backing — the kind that reverse quickly and stop you out.</p></div>
-                </div>
-
-                <div class="fi border border-white/5 rounded-xl overflow-hidden">
-                    <button class="ft w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors" aria-expanded="false"><span class="text-sm font-medium pr-4">What pairs and timeframes does it work on?</span><i data-lucide="plus" class="w-5 h-5 text-zinc-500 flex-shrink-0 fi-icon transition-transform duration-300"></i></button>
-                    <div class="fc hidden px-6 pb-6"><p class="text-sm text-zinc-400 font-light leading-relaxed">Break Pullback works on all major and minor Forex pairs — EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, GBPJPY, and more — plus Gold (XAUUSD). Recommended timeframes are M15, M30, H1, H4 for intraday trading, and H4, D1 for swing trading. The multi-pair scanner monitors all pairs simultaneously from a single chart.</p></div>
-                </div>
-                <div class="fi border border-white/5 rounded-xl overflow-hidden">
-                    <button class="ft w-full flex items-center justify-between p-6 text-left hover:bg-white/[0.02] transition-colors" aria-expanded="false"><span class="text-sm font-medium pr-4">Do I need to be an SMC/ICT expert to use this?</span><i data-lucide="plus" class="w-5 h-5 text-zinc-500 flex-shrink-0 fi-icon transition-transform duration-300"></i></button>
-                    <div class="fc hidden px-6 pb-6"><p class="text-sm text-zinc-400 font-light leading-relaxed">No. The free education included with the product teaches you everything from scratch — what BOS is, why pullbacks matter, how to read daily bias, and how currency strength works. You'll understand the concepts before you ever look at a signal. That said, if you already know SMC/ICT, you'll appreciate how accurately Break Pullback detects the patterns you've been tracking manually.</p></div>
-                </div>
-
-            </div>
+        <div>
+          <div class="l-tag">Currency Strength · Momentum Analysis · Rate of Change</div>
+          <h3 class="l-h">Currency Strength Index (CSI) &amp; Rate of Change</h3>
+          <p class="l-p">A question most traders never ask: <strong>when EURUSD breaks upward, is EUR strengthening — or is USD simply weakening?</strong> The pair chart cannot tell you. Only by measuring each currency individually can you determine which side is driving the move.</p>
+          <p class="l-p"><strong>Currency Strength Index (CSI)</strong> measures the individual momentum of each currency using <strong>Rate of Change (ROC)</strong> — comparing its current price against a basket to its price N periods prior. A positive ROC signals genuine strengthening; negative signals weakness.</p>
+          <p class="l-p">If CSI shows GBP is the strongest currency while USD is the weakest during a GBPUSD breakout, that is a high-conviction institutional move. If GBP is actually weak, the breakout lacks real momentum — you avoid it and preserve capital.</p>
+          <div class="l-pills">
+            <span class="l-pill">Currency Strength</span>
+            <span class="l-pill">Rate of Change</span>
+            <span class="l-pill">Momentum Confirmation</span>
+            <span class="l-pill">Pair Selection</span>
+            <span class="l-pill">Strong vs. Weak</span>
+          </div>
+          <div class="l-bridge"><strong>How Break Pullback uses this:</strong> Layer 3 runs real-time ROC-based CSI. A signal fires only when the driving currency is genuinely strong — the final gate before execution.</div>
         </div>
-    </section>
+      </div>
 
-    <!-- TELEGRAM CONTACT -->
-    <section class="relative py-16 px-6">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
-        <div class="max-w-3xl mx-auto">
-            <div class="relative rounded-2xl border border-blue-400/20 bg-blue-400/5 p-8 md:p-10 overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent pointer-events-none"></div>
-                <div class="relative flex flex-col md:flex-row items-center gap-6 md:gap-10">
-                    <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-400/20 flex items-center justify-center">
-                        <svg class="w-8 h-8 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <h3 class="text-xl font-bold tracking-tight mb-1">Contact Us on Telegram</h3>
-                        <p class="text-sm text-zinc-400 font-light leading-relaxed mb-4">Free Education is available via direct chat or a <span class="text-blue-300 font-medium">Live Trading Meeting</span> — ask anything about the Break & Pullback strategy, how to read signals, or how to use the indicator.</p>
-                        <div class="flex flex-col sm:flex-row items-center md:items-start gap-3">
-                            <a href="https://t.me/abcdwave" target="_blank" rel="noopener noreferrer"
-                               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-white text-sm font-semibold transition-colors duration-200">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                                Chat on Telegram
-                            </a>
-                            <span class="text-xs text-zinc-500 self-center">@abcdwave · quick response</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- L5 -->
+      <div class="lesson reveal">
+        <div>
+          <div class="l-num">05</div>
+          <span class="l-layer g">Framework</span>
         </div>
-    </section>
+        <div>
+          <div class="l-tag">Putting It All Together · The Complete System</div>
+          <h3 class="l-h">The 3-Layer Confluence Model</h3>
+          <p class="l-p">No single layer above is a complete system on its own. The edge comes from applying all three as simultaneous confluence filters. A trade qualifies only when all three conditions align.</p>
+          <div style="margin:28px 0;border:1px solid var(--rule);">
+            <div style="display:flex;align-items:flex-start;gap:20px;padding:20px 24px;border-bottom:1px solid var(--rule2);">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.1em;width:56px;flex-shrink:0;padding-top:2px;">L — 01</div>
+              <div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">BOS confirmed + Pullback retest complete</div><div style="font-size:12px;color:var(--mid);font-weight:300;line-height:1.7;">Wait for structure to break. Wait again for the retest. Both must happen.</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:20px;padding:20px 24px;border-bottom:1px solid var(--rule2);">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.1em;width:56px;flex-shrink:0;padding-top:2px;">L — 02</div>
+              <div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">Direction aligned with HTF Daily Bias</div><div style="font-size:12px;color:var(--mid);font-weight:300;line-height:1.7;">Three Candle Monitor confirms the Daily trend supports this direction.</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:20px;padding:20px 24px;">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.1em;width:56px;flex-shrink:0;padding-top:2px;">L — 03</div>
+              <div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">CSI confirms the driving currency is strong</div><div style="font-size:12px;color:var(--mid);font-weight:300;line-height:1.7;">Base is genuinely strong, quote is genuinely weak. Real momentum is present.</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--rule);padding:20px 24px;background:var(--ink2);">
+            <p style="font-size:13px;color:var(--mid);font-weight:300;line-height:1.75;">When all three layers align, the probability of a successful trade increases substantially. This is the exact framework Break Pullback applies in real time — across 29+ pairs, 24 hours a day, five days a week.</p>
+          </div>
+        </div>
+      </div>
 
-    <!-- FINAL CTA -->
-    <section class="relative py-24 md:py-32 px-6 overflow-hidden">
-        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="width:900px;height:600px;background:radial-gradient(ellipse at center, rgba(78,158,255,0.06) 0%, rgba(78,158,255,0.03) 35%, rgba(78,158,255,0.01) 60%, transparent 75%);transform:translate(-50%,-50%);"></div>
-        <div class="relative max-w-3xl mx-auto text-center">
-            <div class="sr">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-400/20 bg-blue-400/5 text-[10px] font-medium text-blue-400 tracking-widest uppercase mb-8"><i data-lucide="rocket" class="w-3 h-3"></i> Smart. Simple. Fast.</div>
-                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 leading-[1.1]"><span class="grad-white">Stop Missing</span><br><span class="grad-text">High-Probability Breakouts!</span></h2>
-                <p class="text-base md:text-lg text-zinc-400 font-light leading-relaxed max-w-xl mx-auto mb-10">Stop chasing. Stop guessing. Stop manual analysis. Get the free education, understand the 3-layer system, and let Break Pullback do the work.</p>
-                <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="shimmer-btn inline-flex items-center gap-3 text-white font-bold text-base tracking-wider uppercase px-10 py-5 rounded-xl hover:opacity-90 transition-all duration-300 pulse-gold mb-8">
-                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-                    Get Break Pullback on MQL5
-                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                </a>
-                <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-500">
-                    <span class="flex items-center gap-1.5"><i data-lucide="download" class="w-3.5 h-3.5 text-blue-400"></i> Instant Download</span>
-                    <span class="flex items-center gap-1.5"><i data-lucide="book-open" class="w-3.5 h-3.5 text-blue-400"></i> Free Education</span>
-                    <span class="flex items-center gap-1.5"><i data-lucide="headphones" class="w-3.5 h-3.5 text-blue-400"></i> Support Included</span>
-                    <span class="flex items-center gap-1.5"><i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-blue-400"></i> Free Updates</span>
-                </div>
-            </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3-LAYER -->
+<section id="layers" style="padding:0 32px 96px;">
+  <hr class="rule">
+  <div class="ctr" style="padding-top:80px;">
+    <div class="sh reveal">
+      <span class="lbl">Break Pullback — The Indicator</span>
+      <h2 class="sh-h">All Three Layers.<br>Automated. In Real Time.</h2>
+      <p class="sh-p">Once you understand the theory from the lessons above, Break Pullback applies the complete 3-layer system automatically across all major and minor Forex pairs and Gold.</p>
+    </div>
+    <div class="ly-grid reveal">
+      <div class="ly-card">
+        <div class="ly-n">01 / 03</div>
+        <div class="ly-lbl">Layer 1 · BOS + Pullback</div>
+        <h3 class="ly-h">Structural Break &amp;<br>Retest Detection</h3>
+        <p class="ly-p">Identifies Break of Structure in real time. Monitors price until a valid pullback retest is confirmed. Signal fires only then — never on the initial break.</p>
+      </div>
+      <div class="ly-card">
+        <div class="ly-n">02 / 03</div>
+        <div class="ly-lbl">Layer 2 · HTF Bias</div>
+        <h3 class="ly-h">Daily Trend<br>Filter</h3>
+        <p class="ly-p">Three Candle Monitor reads the HTF Daily direction on every active pair. Counter-trend signals are suppressed before reaching the trader.</p>
+      </div>
+      <div class="ly-card">
+        <div class="ly-n">03 / 03</div>
+        <div class="ly-lbl">Layer 3 · Currency Strength</div>
+        <h3 class="ly-h">Momentum<br>Confirmation</h3>
+        <p class="ly-p">Real-time ROC-based CSI runs on every candidate. A signal activates only when the driving currency is genuinely strong — the final confirmation before execution.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="padding:0 32px 96px;">
+  <hr class="rule">
+  <div class="ctr" style="padding-top:80px;">
+    <div class="sh reveal">
+      <span class="lbl">Indicator Features</span>
+      <h2 class="sh-h">Everything Inside<br>Break Pullback</h2>
+    </div>
+    <div class="ft-grid reveal">
+      <div class="ft-card">
+        <div class="ft-icon"><i data-lucide="scan-search" style="width:20px;height:20px"></i></div>
+        <h3 class="ft-h">Multi-Pair Auto Scanner</h3>
+        <p class="ft-p">Monitors 29+ pairs simultaneously — EURUSD, GBPUSD, USDJPY, XAUUSD, and all major and minor Forex pairs. No manual chart hopping.</p>
+      </div>
+      <div class="ft-card">
+        <div class="ft-icon"><i data-lucide="git-branch" style="width:20px;height:20px"></i></div>
+        <h3 class="ft-h">BOS &amp; CHOCH Detection</h3>
+        <p class="ft-p">Identifies Break of Structure and Change of Character in real time on any timeframe from M1 to D1.</p>
+      </div>
+      <div class="ft-card">
+        <div class="ft-icon"><i data-lucide="undo-2" style="width:20px;height:20px"></i></div>
+        <h3 class="ft-h">Pullback Retest Monitor</h3>
+        <p class="ft-p">Entry signal triggers only on a confirmed pullback retest of the broken level. No premature or chase entries.</p>
+      </div>
+      <div class="ft-card">
+        <div class="ft-icon"><i data-lucide="compass" style="width:20px;height:20px"></i></div>
+        <h3 class="ft-h">HTF Daily Bias Filter</h3>
+        <p class="ft-p">Three Candle Monitor reads the Daily trend direction. Counter-trend signals are automatically excluded from output.</p>
+      </div>
+      <div class="ft-card">
+        <div class="ft-icon"><i data-lucide="activity" style="width:20px;height:20px"></i></div>
+        <h3 class="ft-h">Currency Strength Index</h3>
+        <p class="ft-p">Real-time ROC-based CSI confirms which currency is genuinely driving momentum behind every breakout candidate.</p>
+      </div>
+      <div class="ft-card" style="border-left:2px solid var(--green);">
+        <div class="ft-icon" style="color:var(--green)"><i data-lucide="book-open" style="width:20px;height:20px"></i></div>
+        <h3 class="ft-h" style="color:var(--green)">Free Education Bundle</h3>
+        <p class="ft-p">Complete structured lessons on BOS, Pullback Retest, HTF Bias, and CSI. Understand every signal before acting on it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section style="padding:0 32px 96px;">
+  <hr class="rule">
+  <div class="ctr-md" style="padding-top:80px;">
+    <div class="sh reveal">
+      <span class="lbl">Comparison</span>
+      <h2 class="sh-h">Why Most Breakout<br>Indicators Fall Short</h2>
+    </div>
+    <div class="reveal" style="border:1px solid var(--rule);overflow:hidden;">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Break Pullback</th>
+            <th>Typical Breakout Indicator</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Pullback Retest Entry — not chase</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>HTF Daily Bias Filter</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>Currency Strength Confirmation</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>Multi-Pair Scanner (29+ pairs)</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>BOS / CHOCH Structure Detection</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>Free Structured Education Included</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding:0 32px 96px;">
+  <hr class="rule">
+  <div class="ctr-sm" style="padding-top:80px;">
+    <div class="sh reveal">
+      <span class="lbl">FAQ</span>
+      <h2 class="sh-h">Frequently Asked Questions</h2>
+    </div>
+    <div class="reveal" style="border-top:1px solid var(--rule);">
+      <div class="faq-item">
+        <button class="faq-btn"><span class="faq-q">What is a Break and Pullback strategy?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
+        <div class="faq-body">A Break and Pullback strategy involves waiting for price to break a key structural level, then waiting for price to pull back and retest that broken level before entering in the direction of the breakout. The retest confirms the level has flipped — providing a high-probability entry with a clear invalidation point and tight stop loss.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn"><span class="faq-q">What is Break of Structure (BOS)?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
+        <div class="faq-body">BOS occurs when price breaks above a previous swing high in an uptrend, or below a previous swing low in a downtrend. It confirms the current trend is continuing. BOS is a foundational concept in Smart Money Concepts and ICT-style trading, used to identify trend continuation setups with institutional alignment.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn"><span class="faq-q">Why is HTF Daily Bias important for breakout trading?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
+        <div class="faq-body">HTF Daily Bias ensures you only take entries aligned with the dominant daily trend. Trading breakouts against the daily trend means opposing institutional order flow. Adding this single filter eliminates roughly 30–40% of trade opportunities but significantly improves the quality of remaining setups.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn"><span class="faq-q">How does Currency Strength Index improve entries?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
+        <div class="faq-body">CSI measures the individual strength of each currency using Rate of Change (ROC). When a breakout occurs, CSI confirms whether the driving currency is genuinely strong and the paired currency genuinely weak. This prevents entries on breakouts that lack real institutional momentum — the type that reverse quickly and erode account equity.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn"><span class="faq-q">What pairs and timeframes does Break Pullback support?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
+        <div class="faq-body">Break Pullback works on all major and minor Forex pairs — EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, GBPJPY — plus Gold (XAUUSD). Recommended timeframes are M15–H4 for intraday and H4–D1 for swing trading. The scanner monitors all 29+ pairs from a single chart.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn"><span class="faq-q">Do I need to know SMC or ICT to use this?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
+        <div class="faq-body">No prior knowledge is required. The five free lessons on this page cover every concept from first principles. Work through the education section before evaluating the indicator. If you already trade SMC or ICT methods, Break Pullback will automate the pattern recognition you have been doing manually.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TELEGRAM -->
+<section style="padding:0 32px 96px;">
+  <hr class="rule">
+  <div class="ctr-sm" style="padding-top:80px;">
+    <div class="tg-card reveal">
+      <div class="tg-ico">
+        <svg style="width:22px;height:22px;color:var(--mid)" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </div>
+      <div>
+        <h3 class="tg-h">Questions? Contact via Telegram</h3>
+        <p class="tg-p">Free education is also available through direct chat or a live trading session. Ask anything about the Break &amp; Pullback strategy, signal interpretation, or indicator usage.</p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+          <a href="https://t.me/abcdwave" target="_blank" rel="noopener noreferrer" class="tg-btn">
+            <svg style="width:14px;height:14px" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            @abcdwave
+          </a>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.04em;">Quick response · Live trading sessions available</span>
         </div>
-    </section>
-</main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="final">
+  <div style="position:relative;z-index:1;">
+    <div class="reveal">
+      <div style="margin-bottom:20px;"><span class="lbl lbl-g" style="justify-content:center;">Ready to Trade Smarter</span></div>
+      <h2 class="final-h">Stop Missing<br><em>High-Probability Setups.</em></h2>
+      <p class="final-p">Read the free lessons. Understand the 3-layer system. Let Break Pullback handle the scanning across every pair, every session.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">
+        <a href="#education" class="btn-g">Read Free Lessons</a>
+        <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="btn-p">Get Break Pullback on MQL5 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></a>
+      </div>
+      <div class="final-meta">
+        <span><i data-lucide="download" style="width:12px;height:12px;color:var(--green)"></i> Instant Download</span>
+        <span><i data-lucide="book-open" style="width:12px;height:12px;color:var(--green)"></i> Free Education</span>
+        <span><i data-lucide="headphones" style="width:12px;height:12px;color:var(--green)"></i> Support Included</span>
+        <span><i data-lucide="refresh-cw" style="width:12px;height:12px;color:var(--green)"></i> Free Updates</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- FOOTER -->
-<footer class="border-t border-white/5 py-12 px-6">
-    <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-2.5">
-                <div class="w-7 h-7 rounded-lg bg-blue-400/10 border border-blue-400/20 flex items-center justify-center"><i data-lucide="trending-up" class="w-3.5 h-3.5 text-blue-400"></i></div>
-                <span class="font-bold text-sm tracking-tight">Break<span class="text-blue-400">Pullback</span></span>
-            </div>
-            <div class="flex items-center gap-6 text-xs text-zinc-500">
-                <a href="#education" class="hover:text-zinc-300 transition-colors">Education</a>
-                <a href="#layers" class="hover:text-zinc-300 transition-colors">3-Layer System</a>
-                <a href="#features" class="hover:text-zinc-300 transition-colors">Features</a>
-                <a href="#faq" class="hover:text-zinc-300 transition-colors">FAQ</a>
-                <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">MQL5 Page</a>
-                <a href="https://t.me/abcdwave" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors flex items-center gap-1">
-                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    Telegram
-                </a>
-            </div>
-            <p class="text-[11px] text-zinc-600 font-light">Trading involves risk. Past performance ≠ future results.</p>
-        </div>
-        <div class="mt-8 pt-8 border-t border-white/5 text-center">
-            <p class="text-[10px] text-zinc-600 font-light leading-relaxed max-w-2xl mx-auto"><strong class="font-medium text-zinc-500">Risk Disclaimer:</strong> Forex and gold trading carries a high level of risk and may not be suitable for all investors. Break Pullback is an analytical indicator — it does not guarantee profits. Always use proper risk management. Never risk more than you can afford to lose. Past performance does not guarantee future results.</p>
-        </div>
+<footer>
+  <div class="foot-in">
+    <div class="foot-logo">Break<span style="color:var(--green)">Pullback</span></div>
+    <div class="foot-links">
+      <a href="#education">Education</a>
+      <a href="#layers">3-Layer System</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://www.mql5.com/en/market/product/162960" target="_blank" class="ac">MQL5 Page</a>
+      <a href="https://t.me/abcdwave" target="_blank" class="ac">Telegram</a>
     </div>
+  </div>
+  <div style="max-width:1160px;margin:24px auto 0;border-top:1px solid var(--rule2);padding-top:20px;">
+    <p class="disc"><strong style="color:var(--dim);font-weight:500">Risk Disclaimer:</strong> Forex and gold trading carries a high level of risk and may not be suitable for all investors. Break Pullback is an analytical indicator — it does not guarantee profits. Always use proper risk management. Never risk more than you can afford to lose. Past performance does not guarantee future results.</p>
+  </div>
 </footer>
 
-<!-- FLOATING CTA MOBILE -->
-<div class="fixed bottom-6 left-6 right-6 md:hidden z-50">
-    <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="shimmer-btn flex items-center justify-center gap-2 text-white font-bold text-sm tracking-wider uppercase px-6 py-4 rounded-xl shadow-2xl shadow-black/50">
-        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Get Break Pullback on MQL5
-    </a>
+<!-- MOBILE FLOATING CTA -->
+<div class="mob-cta" id="mobCta">
+  <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer">
+    <i data-lucide="shopping-cart" style="width:15px;height:15px"></i> Get Break Pullback on MQL5
+  </a>
 </div>
 
 <script>
-    lucide.createIcons();
+  lucide.createIcons();
 
-    // Mobile menu
-    const mobBtn=document.getElementById('mobBtn'),mobMenu=document.getElementById('mobMenu');
-    let mo=false;
-    mobBtn.addEventListener('click',()=>{mo=!mo;mobMenu.classList.toggle('hidden');});
-    document.querySelectorAll('.ml').forEach(l=>l.addEventListener('click',()=>{mobMenu.classList.add('hidden');mo=false;}));
+  // Mobile menu
+  const mobBtn = document.getElementById('mob-btn');
+  const mobMenu = document.getElementById('mob-menu');
+  let open = false;
+  mobBtn.addEventListener('click', () => { open = !open; mobMenu.style.display = open ? 'flex' : 'none'; });
+  document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => { mobMenu.style.display='none'; open=false; }));
 
-    // FAQ accordion
-    document.querySelectorAll('.ft').forEach(b=>{
-        b.addEventListener('click',()=>{
-            const it=b.closest('.fi'),ct=it.querySelector('.fc'),ic=b.querySelector('.fi-icon'),op=!ct.classList.contains('hidden');
-            document.querySelectorAll('.fi').forEach(o=>{
-                if(o!==it){o.querySelector('.fc').classList.add('hidden');o.querySelector('.fi-icon').style.transform='rotate(0deg)';o.querySelector('.ft').setAttribute('aria-expanded','false');o.classList.remove('border-blue-400/20');o.classList.add('border-white/5');}
-            });
-            if(op){ct.classList.add('hidden');ic.style.transform='rotate(0deg)';b.setAttribute('aria-expanded','false');it.classList.remove('border-blue-400/20');it.classList.add('border-white/5');}
-            else{ct.classList.remove('hidden');ic.style.transform='rotate(45deg)';b.setAttribute('aria-expanded','true');it.classList.add('border-blue-400/20');it.classList.remove('border-white/5');}
-        });
+  // Mobile CTA visibility
+  const mobCta = document.getElementById('mobCta');
+  function checkMob() { mobCta.style.display = window.innerWidth < 900 ? 'block' : 'none'; }
+  checkMob(); window.addEventListener('resize', checkMob);
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const body = item.querySelector('.faq-body');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-body').style.display='none'; });
+      if (!isOpen) { item.classList.add('open'); body.style.display='block'; }
     });
+  });
 
-    // Scroll reveal
-    const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target);}});},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
-    document.querySelectorAll('.sr').forEach(el=>obs.observe(el));
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold: .08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){const h=this.getAttribute('href');if(h==='#')return;e.preventDefault();const t=document.querySelector(h);if(t)window.scrollTo({top:t.offsetTop-100,behavior:'smooth'});});});
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const h = this.getAttribute('href'); if (h==='#') return;
+      e.preventDefault(); const t = document.querySelector(h);
+      if (t) window.scrollTo({ top: t.offsetTop-90, behavior:'smooth' });
+    });
+  });
 
-    // Nav scroll
-    const nav=document.getElementById('mainNav');
-    window.addEventListener('scroll',()=>{if(window.scrollY>50){nav.classList.add('border-blue-500/20');nav.classList.remove('border-white/5');}else{nav.classList.remove('border-blue-500/20');nav.classList.add('border-white/5');}});
+  // Nav border highlight on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = window.scrollY > 50 ? 'rgba(41,182,246,.15)' : 'rgba(255,255,255,.07)';
+  });
 </script>
 </body>
 </html>
