@@ -32,7 +32,12 @@
   --mono:   'JetBrains Mono', monospace;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+
+html { 
+  scroll-behavior: smooth; 
+  scroll-padding-top: 100px;
+}
+
 body { background: var(--ink); color: var(--light); font-family: var(--sans); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; font-weight: 400; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: rgba(41,182,246,.2); color: var(--white); }
@@ -54,13 +59,45 @@ a { color: inherit; text-decoration: none; }
 .nav-logo { font-family:var(--serif);font-size:19px;font-weight:400;color:var(--white);letter-spacing:-.01em;display:flex;align-items:center;gap:10px; }
 .nav-logo-mark { width:30px;height:30px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;background:var(--ink3); }
 .nav-links { display:flex;align-items:center;gap:32px; }
-.nav-links a { font-size:13.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--dim);transition:color .2s; }
+.nav-links a { font-size:13.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--dim);transition:color .25s,text-shadow .25s;position:relative; }
 .nav-links a:hover { color:var(--white); }
+
+/* NAV ACTIVE — NEON HIGHLIGHT */
+.nav-links a.active {
+  color: var(--green);
+  text-shadow:
+    0 0 6px rgba(41,182,246,.6),
+    0 0 18px rgba(41,182,246,.25),
+    0 0 40px rgba(41,182,246,.1);
+}
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 2px;
+  background: var(--green);
+  border-radius: 1px;
+  box-shadow:
+    0 0 6px rgba(41,182,246,.7),
+    0 0 14px rgba(41,182,246,.3);
+}
+
+/* MOBILE MENU ACTIVE */
+#mob-menu a.active {
+  color: var(--green);
+  text-shadow:
+    0 0 6px rgba(41,182,246,.6),
+    0 0 18px rgba(41,182,246,.25);
+}
+
 .nav-cta { display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border:1px solid var(--green);font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--green);font-family:var(--mono);transition:all .2s;background:transparent; }
 .nav-cta:hover { background:var(--green);color:var(--ink); }
 #mob-btn { display:none;background:none;border:none;color:var(--mid);cursor:pointer; }
 #mob-menu { display:none;flex-direction:column;gap:2px;border-top:1px solid var(--rule);padding:16px 32px 24px;background:var(--ink2); }
-#mob-menu a { padding:12px 0;font-size:15px;color:var(--mid);border-bottom:1px solid var(--rule2); }
+#mob-menu a { padding:12px 0;font-size:15px;color:var(--mid);border-bottom:1px solid var(--rule2);transition:color .25s,text-shadow .25s; }
 #mob-menu a:last-child { border:none;margin-top:10px; }
 
 /* ANIMATIONS */
@@ -188,8 +225,6 @@ hr.rule { border:none;border-top:1px solid var(--rule); }
   position: relative;
   background: var(--ink);
 }
-
-/* Background image layer — 40% opacity, no stretch */
 .bg-lambo::before {
   content: '';
   position: absolute;
@@ -203,8 +238,6 @@ hr.rule { border:none;border-top:1px solid var(--rule); }
   z-index: 0;
   pointer-events: none;
 }
-
-/* FAQ section — opaque top fading to reveal */
 .bg-lambo .faq-wrap {
   position: relative;
   z-index: 2;
@@ -228,8 +261,6 @@ hr.rule { border:none;border-top:1px solid var(--rule); }
   position: relative;
   z-index: 1;
 }
-
-/* TG section — very transparent, car visible through */
 .bg-lambo .tg-wrap {
   position: relative;
   z-index: 2;
@@ -420,11 +451,11 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
       <div class="foot-logo">Break<span style="color:var(--green)">Pullback</span></div>
     </a>
     <div class="nav-links">
-      <a href="#education">Education</a>
-      <a href="#problem">The Problem</a>
-      <a href="#layers">3-Layer System</a>
-      <a href="#features">Features</a>
-      <a href="#faq">FAQ</a>
+      <a href="#education" data-section="education">Education</a>
+      <a href="#problem" data-section="problem">The Problem</a>
+      <a href="#layers" data-section="layers">3-Layer System</a>
+      <a href="#features" data-section="features">Features</a>
+      <a href="#faq" data-section="faq">FAQ</a>
     </div>
     <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener" class="nav-cta dk">
       Get on MQL5 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i>
@@ -432,11 +463,11 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
     <button id="mob-btn" aria-label="Menu"><i data-lucide="menu" style="width:22px;height:22px"></i></button>
   </div>
   <div id="mob-menu">
-    <a href="#education" class="ml">Education</a>
-    <a href="#problem" class="ml">The Problem</a>
-    <a href="#layers" class="ml">3-Layer System</a>
-    <a href="#features" class="ml">Features</a>
-    <a href="#faq" class="ml">FAQ</a>
+    <a href="#education" class="ml" data-section="education">Education</a>
+    <a href="#problem" class="ml" data-section="problem">The Problem</a>
+    <a href="#layers" class="ml" data-section="layers">3-Layer System</a>
+    <a href="#features" class="ml" data-section="features">Features</a>
+    <a href="#faq" class="ml" data-section="faq">FAQ</a>
     <a href="https://www.mql5.com/en/market/product/162960" target="_blank" class="nav-cta" style="justify-content:center;">Get on MQL5 →</a>
   </div>
 </nav>
@@ -643,11 +674,11 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
   </div>
 </section>
 
-<!-- ========== LAMBO BACKGROUND WRAPPER ========== -->
+<!-- ========== LAMBO BG WRAPPER ========== -->
 <div class="bg-lambo">
 
   <!-- FAQ — opaque top, fading to transparent bottom -->
-  <div class="faq-wrap" style="padding:0 32px 80px;">
+  <div class="faq-wrap" id="faq" style="padding:0 32px 80px;">
     <hr class="rule">
     <div class="ctr-sm" style="padding-top:84px;">
       <div class="sh reveal">
@@ -683,7 +714,7 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
     </div>
   </div>
 
-  <!-- TELEGRAM — ultra transparent, car visible, glass card -->
+  <!-- TELEGRAM -->
   <div class="tg-wrap" style="padding:0 32px 80px;">
     <div class="ctr-sm">
       <div class="tg-card reveal">
@@ -705,7 +736,7 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
     </div>
   </div>
 
-  <!-- FINAL CTA — minimal overlay, car fully exposed -->
+  <!-- FINAL CTA -->
   <div class="final">
     <div style="position:relative;z-index:1;">
       <div class="reveal">
@@ -756,26 +787,159 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
 
 <script>
   lucide.createIcons();
-  const mobBtn=document.getElementById('mob-btn'),mobMenu=document.getElementById('mob-menu');let open=false;
-  mobBtn.addEventListener('click',()=>{open=!open;mobMenu.style.display=open?'flex':'none';});
-  document.querySelectorAll('.ml').forEach(l=>l.addEventListener('click',()=>{mobMenu.style.display='none';open=false;}));
-  const mobCta=document.getElementById('mobCta');
-  function checkMob(){mobCta.style.display=window.innerWidth<900?'block':'none';}
-  checkMob();window.addEventListener('resize',checkMob);
-  document.querySelectorAll('.faq-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const item=btn.closest('.faq-item'),body=item.querySelector('.faq-body'),isOpen=item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-body').style.display='none';});
-      if(!isOpen){item.classList.add('open');body.style.display='block';}
+
+  /* ── Mobile menu toggle ── */
+  const mobBtn = document.getElementById('mob-btn'),
+        mobMenu = document.getElementById('mob-menu');
+  let open = false;
+  mobBtn.addEventListener('click', () => {
+    open = !open;
+    mobMenu.style.display = open ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => {
+    mobMenu.style.display = 'none';
+    open = false;
+  }));
+
+  /* ── Mobile CTA visibility ── */
+  const mobCta = document.getElementById('mobCta');
+  function checkMob() { mobCta.style.display = window.innerWidth < 900 ? 'block' : 'none'; }
+  checkMob();
+  window.addEventListener('resize', checkMob);
+
+  /* ── FAQ accordion ── */
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item'),
+            body = item.querySelector('.faq-body'),
+            isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-body').style.display = 'none';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.display = 'block';
+      }
     });
   });
-  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click',function(e){const h=this.getAttribute('href');if(h==='#')return;e.preventDefault();const t=document.querySelector(h);if(t)window.scrollTo({top:t.offsetTop-90,behavior:'smooth'});});
+
+  /* ── Reveal on scroll ── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }
+    });
+  }, { threshold: .08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ── Smooth scroll untuk anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const h = this.getAttribute('href');
+      if (h === '#') return;
+      e.preventDefault();
+      const t = document.querySelector(h);
+      if (t) {
+        t.scrollIntoView({ behavior: 'smooth' });
+        const sectionId = h.replace('#', '');
+        setActive(sectionId);
+      }
+    });
   });
-  const nav=document.getElementById('nav');
-  window.addEventListener('scroll',()=>{nav.style.borderBottomColor=window.scrollY>50?'rgba(41,182,246,.15)':'rgba(255,255,255,.07)';});
+
+  /* ── Nav border glow on scroll ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = window.scrollY > 50
+      ? 'rgba(41,182,246,.15)'
+      : 'rgba(255,255,255,.07)';
+  });
+
+  /* ══════════════════════════════════════════════════
+     SCROLL SPY — FIX KOORDINAT (FINAL)
+     ══════════════════════════════════════════════════ */
+
+  const sectionElements = [
+    { id: 'education', el: document.getElementById('education') },
+    { id: 'problem',   el: document.getElementById('problem')   },
+    { id: 'layers',    el: document.getElementById('layers')     },
+    { id: 'features',  el: document.getElementById('features')  },
+    { id: 'faq',       el: document.getElementById('faq')       }
+  ];
+
+  const sections = sectionElements.filter(s => s.el !== null);
+
+  const desktopLinks = document.querySelectorAll('.nav-links a[data-section]');
+  const mobileLinks  = document.querySelectorAll('#mob-menu a[data-section]');
+
+  function clearActive() {
+    desktopLinks.forEach(l => l.classList.remove('active'));
+    mobileLinks.forEach(l  => l.classList.remove('active'));
+  }
+
+  function setActive(sectionId) {
+    clearActive();
+    desktopLinks.forEach(l => {
+      if (l.getAttribute('data-section') === sectionId) l.classList.add('active');
+    });
+    mobileLinks.forEach(l => {
+      if (l.getAttribute('data-section') === sectionId) l.classList.add('active');
+    });
+  }
+
+  // Fungsi untuk mendapatkan posisi absolut elemen relatif terhadap document
+  // Ini penting karena #faq ada di dalam .bg-lambo (position: relative)
+  function getAbsoluteTop(element) {
+    let offsetTop = 0;
+    while(element) {
+      offsetTop += element.offsetTop;
+      element = element.offsetParent;
+    }
+    return offsetTop;
+  }
+
+  // Simpan posisi absolut masing-masing section
+  sections.forEach(s => {
+    s.absTop = getAbsoluteTop(s.el);
+  });
+
+  // Urutkan berdasarkan posisi absolut (karena urutan HTML berbeda dengan urutan Visual)
+  sections.sort((a, b) => a.absTop - b.absTop);
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const offset = 120; // Offset buffer untuk header sticky
+    let activeId = '';
+
+    // Logika sorotan
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
+      // Jika scrollY sudah melewati posisi section (dikurangi offset)
+      if (scrollY >= (section.absTop - offset)) {
+        activeId = section.id;
+      } else {
+        // Karena array sudah diurutkan, jika tidak memenuhi, berarti kita belum sampai ke section ini (atau sudah lewat sebelumnya)
+        // Kita break agar loop tidak membuang waktu mengecek section yang ada jauh di bawah
+        // TAPI perhatikan: jika kita scroll di atas, loop berhenti di section pertama yang TIDAK terpenuhi.
+        // Kita ingin section terakhir yang TERPENUHI.
+        // Jadi kita perhatikan logika "if" di atas: dia meng-update activeId selama scrollY > absTop.
+        // Jadi loop sebaiknya tidak break di sini, agar tetap mengecek semua? 
+        // Tidak, jika array terurut, jika section[i] TIDAK terpenuhi, section[i+1] PASTI tidak terpenuhi.
+        // Jadi kita bisa break untuk performa, DAN activeId sudah menyimpan nilai dari iterasi sebelumnya.
+        break;
+      }
+    }
+
+    // Khusus untuk bagian paling bawah (FAQ area), pastikan FAQ menyala
+    if ((window.innerHeight + scrollY) >= document.body.offsetHeight - 50) {
+      activeId = sections[sections.length - 1].id;
+    }
+
+    if (activeId) {
+      setActive(activeId);
+    }
+  }, { passive: true });
+
 </script>
 </body>
 </html>
