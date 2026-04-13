@@ -940,8 +940,6 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
         activeId = section.id;
       } else {
         // Karena array sudah diurutkan, jika tidak memenuhi, berarti kita belum sampai ke section ini (atau sudah lewat sebelumnya)
-        // Kita break agar loop tidak membuang waktu mengecek section yang ada jauh di bawah
-        // TAPI perhatikan: jika kita scroll di atas, loop berhenti di section pertama yang TIDAK terpenuhi.
         // Kita ingin section terakhir yang TERPENUHI.
         // Jadi kita perhatikan logika "if" di atas: dia meng-update activeId selama scrollY > absTop.
         // Jadi loop sebaiknya tidak break di sini, agar tetap mengecek semua? 
