@@ -10,29 +10,30 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
 :root {
   --ink:    #08090d;
   --ink2:   #0e1018;
   --ink3:   #141720;
-  --rule:   rgba(255,255,255,.10);
-  --rule2:  rgba(255,255,255,.06);
-  --dim:    #7a8494;
-  --mid:    #a8b2c4;
-  --light:  #d8e0ee;
-  --white:  #f0f4fb;
+  --rule:   rgba(255,255,255,.07);
+  --rule2:  rgba(255,255,255,.04);
+  --dim:    #5a6070;
+  --mid:    #8b95a8;
+  --light:  #c8d0de;
+  --white:  #edf1f8;
   --green:  #29b6f6;
   --green2: rgba(41,182,246,.1);
-  --green3: rgba(41,182,246,.08);
-  --serif:  'Playfair Display', Georgia, serif;
-  --sans:   -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --mono:   ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --green3: rgba(41,182,246,.06);
+  --serif:  'DM Serif Display', Georgia, serif;
+  --sans:   'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:   'JetBrains Mono', monospace;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { background: var(--ink); color: var(--light); font-family: var(--sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; overflow-x: hidden; }
+body { background: var(--ink); color: var(--light); font-family: var(--sans); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; font-weight: 400; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: rgba(41,182,246,.2); color: var(--white); }
 ::-webkit-scrollbar { width: 4px; }
@@ -41,26 +42,26 @@ a { color: inherit; text-decoration: none; }
 
 /* TICKER */
 @keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-.ticker-tape { position:fixed;top:0;left:0;right:0;z-index:70;height:32px;background:var(--ink2);border-bottom:1px solid var(--rule);overflow:hidden;display:flex;align-items:center; }
-.ticker-inner { display:flex;gap:3rem;white-space:nowrap;animation:tick 70s linear infinite;font-family:var(--sans);font-size:12.5px;letter-spacing:.02em;color:var(--mid); }
+.ticker-tape { position:fixed;top:0;left:0;right:0;z-index:70;height:34px;background:var(--ink2);border-bottom:1px solid var(--rule);overflow:hidden;display:flex;align-items:center; }
+.ticker-inner { display:flex;gap:3rem;white-space:nowrap;animation:tick 70s linear infinite;font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--dim); }
 .ticker-inner span { display:flex;align-items:center;gap:8px; }
 .t-dot { width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;flex-shrink:0; }
 .t-v { color:var(--green);font-weight:500; }
 
 /* NAV */
-#nav { position:fixed;top:32px;left:0;right:0;z-index:60;background:rgba(8,9,13,.94);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid var(--rule);transition:border-color .3s; }
-.nav-inner { max-width:1160px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between; }
-.nav-logo { font-family:var(--serif);font-size:17px;font-weight:600;color:var(--white);letter-spacing:-.01em;display:flex;align-items:center;gap:10px; }
-.nav-logo-mark { width:28px;height:28px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;background:var(--ink3); }
-.nav-links { display:flex;align-items:center;gap:28px; }
-.nav-links a { font-size:13px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--mid);transition:color .2s; }
+#nav { position:fixed;top:34px;left:0;right:0;z-index:60;background:rgba(8,9,13,.92);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid var(--rule);transition:border-color .3s; }
+.nav-inner { max-width:1200px;margin:0 auto;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between; }
+.nav-logo { font-family:var(--serif);font-size:19px;font-weight:400;color:var(--white);letter-spacing:-.01em;display:flex;align-items:center;gap:10px; }
+.nav-logo-mark { width:30px;height:30px;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;background:var(--ink3); }
+.nav-links { display:flex;align-items:center;gap:32px; }
+.nav-links a { font-size:13.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--dim);transition:color .2s; }
 .nav-links a:hover { color:var(--white); }
-.nav-cta { display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--green);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--green);font-family:var(--mono);transition:all .2s;background:transparent; }
+.nav-cta { display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border:1px solid var(--green);font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--green);font-family:var(--mono);transition:all .2s;background:transparent; }
 .nav-cta:hover { background:var(--green);color:var(--ink); }
 #mob-btn { display:none;background:none;border:none;color:var(--mid);cursor:pointer; }
-#mob-menu { display:none;flex-direction:column;gap:2px;border-top:1px solid var(--rule);padding:12px 32px 20px;background:var(--ink2); }
-#mob-menu a { padding:10px 0;font-size:14px;color:var(--light);border-bottom:1px solid var(--rule2); }
-#mob-menu a:last-child { border:none;margin-top:8px; }
+#mob-menu { display:none;flex-direction:column;gap:2px;border-top:1px solid var(--rule);padding:16px 32px 24px;background:var(--ink2); }
+#mob-menu a { padding:12px 0;font-size:15px;color:var(--mid);border-bottom:1px solid var(--rule2); }
+#mob-menu a:last-child { border:none;margin-top:10px; }
 
 /* ANIMATIONS */
 @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
@@ -70,144 +71,292 @@ a { color: inherit; text-decoration: none; }
 .reveal.on { opacity:1;transform:translateY(0); }
 
 /* LAYOUT */
-.ctr { max-width:1160px;margin:0 auto; }
-.ctr-md { max-width:860px;margin:0 auto; }
-.ctr-sm { max-width:680px;margin:0 auto; }
+.ctr { max-width:1200px;margin:0 auto; }
+.ctr-md { max-width:880px;margin:0 auto; }
+.ctr-sm { max-width:700px;margin:0 auto; }
 hr.rule { border:none;border-top:1px solid var(--rule); }
 
 /* LABEL */
-.lbl { font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--mid);display:inline-flex;align-items:center;gap:8px; }
-.lbl::before { content:'';display:block;width:12px;height:1px;background:currentColor;flex-shrink:0; }
+.lbl { font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);display:inline-flex;align-items:center;gap:10px; }
+.lbl::before { content:'';display:block;width:16px;height:1px;background:currentColor;flex-shrink:0; }
 .lbl-g { color:var(--green); }
 
 /* BUTTONS */
-.btn-p { display:inline-flex;align-items:center;gap:10px;padding:13px 28px;background:var(--white);color:var(--ink);font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:all .2s; }
+.btn-p { display:inline-flex;align-items:center;gap:10px;padding:15px 30px;background:var(--white);color:var(--ink);font-family:var(--mono);font-size:13.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;transition:all .2s; }
 .btn-p:hover { background:var(--green);color:var(--ink); }
-.btn-g { display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border:1px solid rgba(255,255,255,.2);color:var(--light);font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:all .2s; }
+.btn-g { display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border:1px solid var(--rule);color:var(--mid);font-family:var(--mono);font-size:13.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;transition:all .2s; }
 .btn-g:hover { border-color:var(--mid);color:var(--white); }
 
 /* SECTION HEADER */
-.sh { margin-bottom:56px; }
-.sh-h { font-family:var(--serif);font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:600;line-height:1.2;letter-spacing:-.02em;color:var(--white);margin:16px 0; }
-.sh-p { font-size:16px;color:var(--mid);font-weight:400;line-height:1.7;max-width:540px; }
+.sh { margin-bottom:60px; }
+.sh-h { font-family:var(--serif);font-size:clamp(1.85rem,3.8vw,2.7rem);font-weight:400;line-height:1.2;letter-spacing:-.02em;color:var(--white);margin:18px 0; }
+.sh-p { font-size:17px;color:var(--mid);font-weight:300;line-height:1.75;max-width:560px; }
 
 /* HERO */
-#hero { position:relative;padding:200px 32px 120px;overflow:hidden; }
+#hero { position:relative;padding:210px 32px 130px;overflow:hidden; }
 #hero::before { content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--rule2) 1px,transparent 1px),linear-gradient(90deg,var(--rule2) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,black,transparent); }
 #hero::after { content:'';position:absolute;pointer-events:none;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(41,182,246,.04) 0%,transparent 70%);top:30%;left:50%;transform:translateX(-50%); }
 .hero-inner { display:grid;grid-template-columns:1fr auto;align-items:start;gap:60px; }
 .hero-candles { flex-shrink:0;opacity:0;animation:fadeIn .8s cubic-bezier(.22,1,.36,1) .6s forwards;padding-top:0; }
 @media(max-width:900px){ .hero-inner{grid-template-columns:1fr} .hero-candles{display:none} }
-.hero-h { font-family:var(--serif);font-size:clamp(2.8rem,6vw,5rem);font-weight:700;line-height:1.08;letter-spacing:-.025em;color:var(--white);margin-bottom:28px; }
-.hero-h em { font-style:italic;color:var(--green); }
-.hero-sub { font-size:17px;font-weight:400;color:var(--mid);line-height:1.75;max-width:580px;margin-bottom:44px; }
+.hero-h { font-family:var(--serif);font-size:clamp(2.8rem,6vw,5rem);font-weight:400;line-height:1.08;letter-spacing:-.025em;color:var(--white);margin-bottom:30px; }
+.hero-h em { font-style:normal;color:var(--green); }
+.hero-sub { font-size:19px;font-weight:300;color:var(--mid);line-height:1.8;max-width:600px;margin-bottom:44px; }
 .hero-sub strong { color:var(--light);font-weight:500; }
 .hero-acts { display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-bottom:60px; }
-.hero-meta { display:flex;flex-wrap:wrap;gap:32px;padding-top:40px;border-top:1px solid var(--rule); }
-.hm-val { font-family:var(--serif);font-size:1.75rem;font-weight:600;color:var(--white);line-height:1; }
-.hm-key { font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-top:4px; }
+.hero-meta { display:flex;flex-wrap:wrap;gap:36px;padding-top:40px;border-top:1px solid var(--rule); }
+.hm-val { font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--white);line-height:1; }
+.hm-key { font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:6px; }
 
 /* EDU BANNER */
-.edu-bar { background:var(--ink2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:28px 32px; }
-.edu-bar-in { max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px; }
-.edu-icon { width:42px;height:42px;background:var(--ink3);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.edu-bar { background:var(--ink2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:32px 32px; }
+.edu-bar-in { max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px; }
+.edu-icon { width:46px;height:46px;background:var(--ink3);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
 .edu-stats { display:flex;gap:0; }
-.est { text-align:center;padding:0 24px;border-right:1px solid var(--rule); }
+.est { text-align:center;padding:0 28px;border-right:1px solid var(--rule); }
 .est:first-child { padding-left:0; }
 .est:last-child { border-right:none; }
-.est-n { font-family:var(--serif);font-size:1.4rem;font-weight:600;color:var(--white);line-height:1; }
-.est-l { font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-top:4px; }
+.est-n { font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--white);line-height:1; }
+.est-l { font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:6px; }
 
 /* PROBLEM */
-.prob-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1px;background:var(--rule); }
-.prob-card { background:var(--ink2);padding:36px 32px;transition:background .25s; }
+.prob-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--rule); }
+.prob-card { background:var(--ink2);padding:40px 36px;transition:background .25s; }
 .prob-card:hover { background:var(--ink3); }
-.prob-n { font-family:var(--mono);font-size:12px;color:var(--mid);letter-spacing:.06em;margin-bottom:20px; }
-.prob-h { font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:12px;line-height:1.35; }
-.prob-p { font-size:14px;color:var(--mid);font-weight:400;line-height:1.8; }
+.prob-n { font-family:var(--mono);font-size:13px;color:var(--dim);letter-spacing:.06em;margin-bottom:22px; }
+.prob-h { font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--white);margin-bottom:14px;line-height:1.35; }
+.prob-p { font-size:15.5px;color:var(--mid);font-weight:300;line-height:1.8; }
 .prob-p strong { color:var(--light);font-weight:500; }
 
 /* LESSON */
-.lesson { border-top:1px solid var(--rule);padding:52px 0;display:grid;grid-template-columns:100px 1fr;gap:48px; }
+.lesson { border-top:1px solid var(--rule);padding:56px 0;display:grid;grid-template-columns:100px 1fr;gap:48px; }
 .lesson:last-child { border-bottom:1px solid var(--rule); }
 .l-num { font-family:var(--serif);font-size:2.5rem;font-weight:400;color:var(--ink3);line-height:1;-webkit-text-stroke:1px var(--rule); }
-.l-layer { font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-top:10px;padding:4px 10px;border:1px solid var(--rule);color:var(--mid);background:var(--ink2);display:inline-block; }
+.l-layer { font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:12px;padding:4px 10px;border:1px solid var(--rule);color:var(--dim);background:var(--ink2);display:inline-block; }
 .l-layer.g { border-color:rgba(41,182,246,.25);color:var(--green);background:var(--green3); }
-.l-tag { font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-bottom:12px; }
-.l-h { font-family:var(--serif);font-size:1.35rem;font-weight:600;color:var(--white);margin-bottom:20px;line-height:1.3; }
-.l-p { font-size:15px;color:var(--mid);font-weight:400;line-height:1.85;margin-bottom:16px; }
-.l-p strong { color:var(--light);font-weight:600; }
-.l-pills { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px; }
-.l-pill { font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--rule);color:var(--mid); }
-.l-bridge { border-left:2px solid var(--green);padding:14px 18px;background:var(--green3);font-size:13px;font-weight:400;color:var(--light);line-height:1.75; }
+.l-tag { font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:12px; }
+.l-h { font-family:var(--serif);font-size:1.55rem;font-weight:400;color:var(--white);margin-bottom:22px;line-height:1.3; }
+.l-p { font-size:17px;color:var(--mid);font-weight:300;line-height:1.9;margin-bottom:18px; }
+.l-p strong { color:var(--light);font-weight:500; }
+.l-pills { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px; }
+.l-pill { font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--rule);color:var(--dim); }
+.l-bridge { border-left:2px solid var(--green);padding:14px 20px;background:var(--green3);font-size:14.5px;font-weight:300;color:var(--mid);line-height:1.8; }
 .l-bridge strong { color:var(--green);font-weight:500; }
 
 /* LAYERS */
 .ly-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule); }
-.ly-card { background:var(--ink2);padding:40px 32px;transition:background .25s; }
+.ly-card { background:var(--ink2);padding:44px 36px;transition:background .25s; }
 .ly-card:hover { background:var(--ink3); }
-.ly-n { font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-bottom:20px; }
-.ly-lbl { font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px; }
-.ly-h { font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:14px;line-height:1.3; }
-.ly-p { font-size:14px;color:var(--mid);font-weight:400;line-height:1.8; }
+.ly-n { font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:22px; }
+.ly-lbl { font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px; }
+.ly-h { font-family:var(--serif);font-size:1.25rem;font-weight:400;color:var(--white);margin-bottom:16px;line-height:1.3; }
+.ly-p { font-size:15.5px;color:var(--mid);font-weight:300;line-height:1.8; }
 
 /* FEATURES */
 .ft-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule); }
-.ft-card { background:var(--ink2);padding:32px 28px;transition:background .25s; }
+.ft-card { background:var(--ink2);padding:36px 32px;transition:background .25s; }
 .ft-card:hover { background:var(--ink3); }
-.ft-icon { margin-bottom:20px;color:var(--mid); }
-.ft-h { font-size:14px;font-weight:600;color:var(--white);letter-spacing:.01em;margin-bottom:8px; }
-.ft-p { font-size:13px;color:var(--mid);font-weight:400;line-height:1.8; }
+.ft-icon { margin-bottom:22px;color:var(--dim); }
+.ft-h { font-size:15px;font-weight:600;color:var(--white);letter-spacing:.01em;margin-bottom:10px; }
+.ft-p { font-size:14.5px;color:var(--dim);font-weight:300;line-height:1.8; }
 
 /* COMPARISON */
 .cmp { width:100%;border-collapse:collapse; }
 .cmp thead tr { border-bottom:1px solid var(--rule); }
-.cmp th { padding:14px 20px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);font-weight:600;text-align:left; }
+.cmp th { padding:16px 22px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:500;text-align:left; }
 .cmp th:nth-child(2) { color:var(--green);text-align:center; }
 .cmp th:nth-child(3) { text-align:center; }
-.cmp td { padding:14px 20px;font-size:14px;color:var(--mid);border-bottom:1px solid var(--rule2); }
+.cmp td { padding:16px 22px;font-size:15px;color:var(--mid);border-bottom:1px solid var(--rule2); }
 .cmp td:nth-child(2),.cmp td:nth-child(3) { text-align:center; }
 .cmp tr:last-child td { border-bottom:none; }
 .cmp tr:hover td { background:var(--ink3); }
 
 /* FAQ */
-.faq-item { border-bottom:1px solid var(--rule); }
-.faq-btn { width:100%;display:flex;align-items:center;justify-content:space-between;padding:22px 0;background:none;border:none;color:var(--white);cursor:pointer;text-align:left;transition:color .2s; }
+.faq-item { border-bottom:1px solid rgba(255,255,255,.05); }
+.faq-btn { width:100%;display:flex;align-items:center;justify-content:space-between;padding:26px 0;background:none;border:none;color:var(--light);cursor:pointer;text-align:left;transition:color .2s; }
 .faq-btn:hover { color:var(--white); }
-.faq-q { font-size:15px;font-weight:500;padding-right:24px;line-height:1.5; }
+.faq-q { font-size:16.5px;font-weight:500;padding-right:24px;line-height:1.5; }
 .faq-ico { flex-shrink:0;color:var(--dim);transition:transform .3s; }
-.faq-body { display:none;padding:0 0 24px;font-size:14px;color:var(--mid);font-weight:400;line-height:1.9; }
+.faq-body { display:none;padding:0 0 26px;font-size:15.5px;color:var(--mid);font-weight:300;line-height:1.9; }
 .faq-item.open .faq-ico { transform:rotate(45deg); }
 
-/* TG CARD */
-.tg-card { background:var(--ink2);border:1px solid var(--rule);padding:48px 40px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start; }
-.tg-ico { width:48px;height:48px;background:var(--ink3);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
-.tg-h { font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--white);margin-bottom:8px; }
-.tg-p { font-size:14px;color:var(--mid);font-weight:400;line-height:1.8;margin-bottom:24px; }
-.tg-btn { display:inline-flex;align-items:center;gap:8px;border:1px solid var(--green);color:var(--green);padding:10px 20px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .2s; }
-.tg-btn:hover { background:var(--green);color:var(--ink); }
+/* TG HANDLE */
+.tg-handle { font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;text-transform:lowercase;color:var(--green); }
+
+/* ========== LAMBO BG WRAPPER ========== */
+.bg-lambo {
+  position: relative;
+  background: var(--ink);
+}
+
+/* Background image layer — 40% opacity, no stretch */
+.bg-lambo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://z-cdn-media.chatglm.cn/files/337c7649-d3b4-446c-95ea-9b64b2260094.png?auth_key=1876082101-408cc1f5074e452da7c94ef1cf4185ef-0-de4c48d762a649b0fbd987b185e4cde2');
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* FAQ section — opaque top fading to reveal */
+.bg-lambo .faq-wrap {
+  position: relative;
+  z-index: 2;
+}
+.bg-lambo .faq-wrap::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    180deg,
+    rgba(8,9,13,.97) 0%,
+    rgba(8,9,13,.92) 15%,
+    rgba(8,9,13,.75) 45%,
+    rgba(8,9,13,.35) 75%,
+    rgba(8,9,13,.05) 100%
+  );
+  pointer-events:none;
+  z-index:0;
+}
+.bg-lambo .faq-wrap > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* TG section — very transparent, car visible through */
+.bg-lambo .tg-wrap {
+  position: relative;
+  z-index: 2;
+}
+.bg-lambo .tg-wrap::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    180deg,
+    rgba(8,9,13,.03) 0%,
+    rgba(8,9,13,.01) 40%,
+    rgba(8,9,13,.03) 60%,
+    rgba(8,9,13,.15) 100%
+  );
+  pointer-events:none;
+  z-index:0;
+}
+.bg-lambo .tg-wrap > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glass TG Card */
+.tg-card {
+  background: rgba(14,16,24,.35);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 48px 44px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: start;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  transition: border-color .3s, box-shadow .3s;
+}
+.tg-card:hover {
+  border-color: rgba(255,255,255,.12);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+.tg-ico {
+  width: 52px;
+  height: 52px;
+  background: rgba(41,182,246,.08);
+  border: 1px solid rgba(41,182,246,.15);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tg-ico svg { color: var(--green); }
+.tg-h { font-family:var(--serif);font-size:1.35rem;font-weight:400;color:var(--white);margin-bottom:10px; }
+.tg-p { font-size:15.5px;color:rgba(200,208,222,.75);font-weight:300;line-height:1.8;margin-bottom:28px; }
+.tg-btn {
+  display:inline-flex;align-items:center;gap:8px;
+  background: rgba(41,182,246,.08);
+  border: 1px solid rgba(41,182,246,.2);
+  color:var(--green);
+  padding:11px 22px;
+  font-family:var(--mono);font-size:13px;font-weight:500;
+  letter-spacing:.04em;text-transform:uppercase;
+  border-radius: 8px;
+  transition:all .2s;
+}
+.tg-btn:hover { background:rgba(41,182,246,.15);border-color:rgba(41,182,246,.35); }
 
 /* FINAL CTA */
-.final { position:relative;padding:120px 32px;border-top:1px solid var(--rule);overflow:hidden;text-align:center; }
-.final::before { content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(41,182,246,.05) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none; }
-.final-h { font-family:var(--serif);font-size:clamp(2rem,5vw,3.5rem);font-weight:700;color:var(--white);line-height:1.1;letter-spacing:-.025em;margin-bottom:20px; }
-.final-h em { font-style:italic;color:var(--green); }
-.final-p { font-size:17px;color:var(--mid);font-weight:400;line-height:1.7;max-width:460px;margin:0 auto 40px; }
-.final-meta { display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-top:36px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid); }
+.final {
+  position: relative;
+  z-index: 1;
+  padding: 160px 32px;
+  overflow: hidden;
+  text-align: center;
+}
+.final::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8,9,13,.12) 0%,
+      rgba(8,9,13,.04) 15%,
+      rgba(8,9,13,.03) 35%,
+      rgba(8,9,13,.08) 60%,
+      rgba(8,9,13,.45) 82%,
+      rgba(8,9,13,.92) 100%
+    );
+  pointer-events:none;
+  z-index:0;
+}
+.final::after {
+  content:'';
+  position:absolute;
+  width:700px;height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(41,182,246,.05) 0%,transparent 70%);
+  top:20%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:0;
+}
+.final-h { font-family:var(--serif);font-size:clamp(2rem,5vw,3.5rem);font-weight:400;color:var(--white);line-height:1.1;letter-spacing:-.025em;margin-bottom:22px; }
+.final-h em { font-style:normal;color:var(--green); }
+.final-p { font-size:18px;color:var(--mid);font-weight:300;line-height:1.75;max-width:480px;margin:0 auto 44px; }
+.final-meta { display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-top:40px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim); }
 .final-meta span { display:flex;align-items:center;gap:8px; }
 
 /* FOOTER */
-footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink2); }
-.foot-in { max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px; }
-.foot-logo { font-family:var(--serif);font-size:15px;font-weight:600;color:var(--white); }
-.foot-links { display:flex;flex-wrap:wrap;gap:20px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mid); }
+footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink2); }
+.foot-in { max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px; }
+.foot-logo { font-family:var(--serif);font-size:17px;font-weight:400;color:var(--white); }
+.foot-links { display:flex;flex-wrap:wrap;gap:24px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim); }
 .foot-links a:hover { color:var(--white); }
 .foot-links a.ac:hover { color:var(--green); }
-.disc { font-size:13px;color:var(--mid);text-align:center;margin-top:28px;line-height:1.8; }
+.disc { font-size:13px;color:var(--dim);text-align:center;margin-top:30px;line-height:1.8; }
 
 /* MOB CTA */
 .mob-cta { position:fixed;bottom:20px;left:16px;right:16px;z-index:50;display:none; }
-.mob-cta a { display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:var(--white);color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 8px 32px rgba(0,0,0,.6); }
+.mob-cta a { display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:var(--white);color:var(--ink);font-family:var(--mono);font-size:13.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;box-shadow:0 8px 32px rgba(0,0,0,.6); }
 
 @media(max-width:900px){
   .nav-links{display:none}
@@ -219,16 +368,23 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
   .l-num{font-size:1.6rem}
   .tg-card{grid-template-columns:1fr}
   .mob-cta{display:block}
-  .hero-meta{gap:20px}
+  .hero-meta{gap:24px}
   .edu-stats{flex-wrap:wrap}
+  .final{padding:120px 20px}
 }
 @media(max-width:600px){
-  #hero{padding:160px 20px 80px}
-  .section-p{padding:64px 20px}
-  .edu-bar{padding:24px 20px}
+  #hero{padding:170px 20px 90px}
+  .section-p{padding:68px 20px}
+  .edu-bar{padding:28px 20px}
   .edu-bar-in{flex-direction:column}
   .prob-grid{grid-template-columns:1fr}
   .ft-grid{grid-template-columns:1fr 1fr}
+  .hero-sub{font-size:17px}
+  .sh-p{font-size:16px}
+  .l-p{font-size:16px}
+  .final{padding:100px 20px}
+  .tg-card{padding:36px 24px}
+  .bg-lambo::before{background-attachment:scroll}
 }
 </style>
 </head>
@@ -242,7 +398,7 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
     <span>HTF Daily Bias &nbsp;·&nbsp; <span class="t-v">Layer 02</span></span>
     <span>Currency Strength &nbsp;·&nbsp; <span class="t-v">Layer 03</span></span>
     <span><span class="t-dot"></span> MetaTrader 5 Indicator</span>
-    <span>29+ Pairs &nbsp;·&nbsp; <span class="t-v">Scanned Simultaneously</span></span>
+    <span>20+ Pairs &nbsp;·&nbsp; <span class="t-v">Scanned Simultaneously</span></span>
     <span>M1 — D1 &nbsp;·&nbsp; <span class="t-v">All Timeframes</span></span>
     <span><span class="t-dot"></span> 100% Free Education · No Signup</span>
     <span><span class="t-dot"></span> Free education — <span class="t-v">Break &amp; Pullback Strategy</span></span>
@@ -250,7 +406,7 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
     <span>HTF Daily Bias &nbsp;·&nbsp; <span class="t-v">Layer 02</span></span>
     <span>Currency Strength &nbsp;·&nbsp; <span class="t-v">Layer 03</span></span>
     <span><span class="t-dot"></span> MetaTrader 5 Indicator</span>
-    <span>29+ Pairs &nbsp;·&nbsp; <span class="t-v">Scanned Simultaneously</span></span>
+    <span>20+ Pairs &nbsp;·&nbsp; <span class="t-v">Scanned Simultaneously</span></span>
     <span>M1 — D1 &nbsp;·&nbsp; <span class="t-v">All Timeframes</span></span>
     <span><span class="t-dot"></span> 100% Free Education · No Signup</span>
   </div>
@@ -260,8 +416,8 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
 <nav id="nav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <div class="nav-logo-mark"><i data-lucide="trending-up" style="width:14px;height:14px;color:var(--green)"></i></div>
-      Break<span style="color:var(--green)">Pullback</span>
+      <div class="nav-logo-mark"><i data-lucide="trending-up" style="width:15px;height:15px;color:var(--green)"></i></div>
+      <div class="foot-logo">Break<span style="color:var(--green)">Pullback</span></div>
     </a>
     <div class="nav-links">
       <a href="#education">Education</a>
@@ -271,9 +427,9 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
       <a href="#faq">FAQ</a>
     </div>
     <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener" class="nav-cta dk">
-      Get on MQL5 <i data-lucide="arrow-up-right" style="width:13px;height:13px"></i>
+      Get on MQL5 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i>
     </a>
-    <button id="mob-btn" aria-label="Menu"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
+    <button id="mob-btn" aria-label="Menu"><i data-lucide="menu" style="width:22px;height:22px"></i></button>
   </div>
   <div id="mob-menu">
     <a href="#education" class="ml">Education</a>
@@ -290,53 +446,40 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
   <div class="ctr" style="position:relative;z-index:1;">
     <div class="hero-inner">
       <div>
-        <div class="fade" style="margin-bottom:28px;"><span class="lbl lbl-g">Trading Education &amp; MT5 Indicator</span></div>
+        <div class="fade" style="margin-bottom:30px;"><span class="lbl lbl-g">Trading Education &amp; MT5 Indicator</span></div>
         <h1 class="hero-h fade d1">Learn the Strategy.<br><em>Then Automate It.</em></h1>
         <p class="hero-sub fade d2">
           A <strong>free professional education resource</strong> on the Break &amp; Pullback method — market structure, retest entries, higher timeframe bias, and currency strength. Then see how the <strong>Break Pullback indicator</strong> applies every layer automatically on MT5.
         </p>
         <div class="hero-acts fade d3">
-          <a href="#education" class="btn-g"><i data-lucide="book-open" style="width:15px;height:15px"></i> Read Free Lessons</a>
-          <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener" class="btn-p">Get Indicator on MQL5 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></a>
+          <a href="#education" class="btn-g"><i data-lucide="book-open" style="width:16px;height:16px"></i> Read Free Lessons</a>
+          <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener" class="btn-p">Get Indicator on MQL5 <i data-lucide="arrow-up-right" style="width:15px;height:15px"></i></a>
         </div>
         <div class="hero-meta fade d4">
           <div><div class="hm-val">5</div><div class="hm-key">Free Lessons</div></div>
           <div><div class="hm-val">3</div><div class="hm-key">Confirmation Layers</div></div>
-          <div><div class="hm-val">29+</div><div class="hm-key">Pairs Scanned</div></div>
+          <div><div class="hm-val">20+</div><div class="hm-key">Pairs Scanned</div></div>
           <div><div class="hm-val">M1–D1</div><div class="hm-key">All Timeframes</div></div>
           <div><div class="hm-val" style="color:var(--green)">Free</div><div class="hm-key">Education Cost</div></div>
         </div>
       </div>
-
-      <!-- CANDLESTICK GRAPHIC -->
       <div class="hero-candles">
         <svg width="430" height="460" viewBox="0 0 430 460" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-          <!-- CANDLE 1 — blue, shortest & lowest -->
           <line x1="36" y1="340" x2="36" y2="355" stroke="#29b6f6" stroke-width="2.5"/>
           <rect x="4" y="355" width="64" height="60" fill="#29b6f6"/>
           <line x1="36" y1="415" x2="36" y2="430" stroke="#29b6f6" stroke-width="2.5"/>
-
-          <!-- CANDLE 2 — blue, short -->
           <line x1="126" y1="280" x2="126" y2="300" stroke="#29b6f6" stroke-width="2.5"/>
           <rect x="94" y="300" width="64" height="90" fill="#29b6f6"/>
           <line x1="126" y1="390" x2="126" y2="415" stroke="#29b6f6" stroke-width="2.5"/>
-
-          <!-- CANDLE 3 — blue, medium -->
           <line x1="216" y1="200" x2="216" y2="228" stroke="#29b6f6" stroke-width="2.5"/>
           <rect x="184" y="228" width="64" height="150" fill="#29b6f6"/>
           <line x1="216" y1="378" x2="216" y2="420" stroke="#29b6f6" stroke-width="2.5"/>
-
-          <!-- CANDLE 4 — blue, tallest -->
           <line x1="306" y1="10" x2="306" y2="48" stroke="#29b6f6" stroke-width="2.5"/>
           <rect x="272" y="48" width="68" height="220" fill="#29b6f6"/>
           <line x1="306" y1="268" x2="306" y2="310" stroke="#29b6f6" stroke-width="2.5"/>
-
-          <!-- CANDLE 5 — amber, tall -->
           <line x1="396" y1="28" x2="396" y2="68" stroke="#ffab00" stroke-width="2.5"/>
           <rect x="364" y="68" width="64" height="178" fill="#ffab00"/>
           <line x1="396" y1="246" x2="396" y2="290" stroke="#ffab00" stroke-width="2.5"/>
-
         </svg>
       </div>
     </div>
@@ -346,11 +489,11 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
 <!-- EDU BANNER -->
 <div class="edu-bar">
   <div class="edu-bar-in reveal">
-    <div style="display:flex;align-items:flex-start;gap:20px;">
-      <div class="edu-icon"><i data-lucide="graduation-cap" style="width:20px;height:20px;color:var(--green)"></i></div>
+    <div style="display:flex;align-items:flex-start;gap:22px;">
+      <div class="edu-icon"><i data-lucide="graduation-cap" style="width:22px;height:22px;color:var(--green)"></i></div>
       <div>
-        <div style="font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--white);margin-bottom:3px;">Trading Education Hub</div>
-        <div style="font-size:14px;color:var(--mid);">This page contains free, structured lessons on the Break &amp; Pullback strategy — no signup required. Read at your own pace.</div>
+        <div style="font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--white);margin-bottom:4px;">Trading Education Hub</div>
+        <div style="font-size:14.5px;color:var(--dim);line-height:1.7;">This page contains free, structured lessons on the Break &amp; Pullback strategy — no signup required. Read at your own pace.</div>
       </div>
     </div>
     <div class="edu-stats">
@@ -362,364 +505,229 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
 </div>
 
 <!-- PROBLEM -->
-<section id="problem" style="padding:96px 32px;">
+<section id="problem" style="padding:100px 32px;">
   <div class="ctr">
-    <div class="sh reveal">
-      <span class="lbl">The Core Problem</span>
-      <h2 class="sh-h">Why Breakout Traders<br>Keep Losing Money</h2>
-      <p class="sh-p">Breakout trading works — when executed correctly. Most retail traders make the same four structural mistakes.</p>
-    </div>
+    <div class="sh reveal"><span class="lbl">The Core Problem</span><h2 class="sh-h">Why Breakout Traders<br>Keep Losing Money</h2><p class="sh-p">Breakout trading works — when executed correctly. Most retail traders make the same four structural mistakes.</p></div>
     <div class="prob-grid reveal">
-      <div class="prob-card">
-        <div class="prob-n">01 / 04</div>
-        <h3 class="prob-h">Entering on the Break,<br>Not the Pullback</h3>
-        <p class="prob-p">Most traders jump in at the breakout candle. Professionals <strong>wait for the pullback retest</strong> — a cleaner entry with a tighter stop and better risk-reward. Level flip must be confirmed before acting.</p>
-      </div>
-      <div class="prob-card">
-        <div class="prob-n">02 / 04</div>
-        <h3 class="prob-h">Trading Against<br>the Daily Trend</h3>
-        <p class="prob-p">A bearish H1 breakout against a <strong>bullish Daily structure</strong> means opposing institutional order flow. This single filter eliminates 30–40% of low-probability trades.</p>
-      </div>
-      <div class="prob-card">
-        <div class="prob-n">03 / 04</div>
-        <h3 class="prob-h">No Capacity to Monitor<br>20+ Charts</h3>
-        <p class="prob-p">By the time you manually scan 20+ pairs for structural breaks and pullback zones — <strong>the move is already over</strong>. Manual multi-pair scanning is practically impossible at scale.</p>
-      </div>
-      <div class="prob-card">
-        <div class="prob-n">04 / 04</div>
-        <h3 class="prob-h">Entering Without<br>Momentum Confirmation</h3>
-        <p class="prob-p">Is USD strengthening, or just EUR weakening? The chart alone cannot tell you. Without <strong>Currency Strength analysis</strong>, you enter breakouts with no institutional backing.</p>
-      </div>
+      <div class="prob-card"><div class="prob-n">01 / 04</div><h3 class="prob-h">Entering on the Break,<br>Not the Pullback</h3><p class="prob-p">Most traders jump in at the breakout candle. Professionals <strong>wait for the pullback retest</strong> — a cleaner entry with a tighter stop and better risk-reward. Level flip must be confirmed before acting.</p></div>
+      <div class="prob-card"><div class="prob-n">02 / 04</div><h3 class="prob-h">Trading Against<br>the Daily Trend</h3><p class="prob-p">A bearish H1 breakout against a <strong>bullish Daily structure</strong> means opposing institutional order flow. This single filter eliminates 30–40% of low-probability trades.</p></div>
+      <div class="prob-card"><div class="prob-n">03 / 04</div><h3 class="prob-h">No Capacity to Monitor<br>20+ Charts</h3><p class="prob-p">By the time you manually scan 20+ pairs for structural breaks and pullback zones — <strong>the move is already over</strong>. Manual multi-pair scanning is practically impossible at scale.</p></div>
+      <div class="prob-card"><div class="prob-n">04 / 04</div><h3 class="prob-h">Entering Without<br>Momentum Confirmation</h3><p class="prob-p">Is USD strengthening, or just EUR weakening? The chart alone cannot tell you. Without <strong>Currency Strength analysis</strong>, you enter breakouts with no institutional backing.</p></div>
     </div>
-    <div class="reveal" style="margin-top:1px;background:var(--ink2);padding:28px 32px;border-left:2px solid var(--green);display:flex;align-items:flex-start;gap:14px;">
-      <i data-lucide="corner-down-right" style="width:16px;height:16px;color:var(--green);margin-top:2px;flex-shrink:0;"></i>
-      <p style="font-size:15px;color:var(--mid);font-weight:400;line-height:1.85;"><strong style="color:var(--light);font-weight:500">The solution</strong> is a three-layer confluence framework: structural break + pullback retest, aligned with HTF daily trend, confirmed by real currency momentum. The lessons below teach each layer in full. The indicator automates all three.</p>
+    <div class="reveal" style="margin-top:1px;background:var(--ink2);padding:30px 36px;border-left:2px solid var(--green);display:flex;align-items:flex-start;gap:16px;">
+      <i data-lucide="corner-down-right" style="width:18px;height:18px;color:var(--green);margin-top:3px;flex-shrink:0;"></i>
+      <p style="font-size:15.5px;color:var(--mid);font-weight:300;line-height:1.85;"><strong style="color:var(--light);font-weight:500">The solution</strong> is a three-layer confluence framework: structural break + pullback retest, aligned with HTF daily trend, confirmed by real currency momentum. The lessons below teach each layer in full. The indicator automates all three.</p>
     </div>
   </div>
 </section>
 
 <!-- FREE EDUCATION -->
-<section id="education" style="padding:0 32px 96px;">
+<section id="education" style="padding:0 32px 100px;">
   <hr class="rule">
-  <div class="ctr" style="padding-top:80px;">
-    <div class="sh reveal">
-      <span class="lbl lbl-g">Free Education · 5 Lessons</span>
-      <h2 class="sh-h">Master the Break &amp; Pullback<br>Strategy — From First Principles</h2>
-      <p class="sh-p">Each lesson maps to one layer of the 3-layer confirmation system. Read these before using any indicator or placing any trade.</p>
-    </div>
-
+  <div class="ctr" style="padding-top:84px;">
+    <div class="sh reveal"><span class="lbl lbl-g">Free Education · 5 Lessons</span><h2 class="sh-h">Master the Break &amp; Pullback<br>Strategy — From First Principles</h2><p class="sh-p">Each lesson maps to one layer of the 3-layer confirmation system. Read these before using any indicator or placing any trade.</p></div>
     <div class="ctr-md" style="padding:0;">
-
-      <!-- L1 -->
       <div class="lesson reveal">
-        <div>
-          <div class="l-num">01</div>
-          <span class="l-layer">Layer 1</span>
-        </div>
+        <div><div class="l-num">01</div><span class="l-layer">Layer 1</span></div>
         <div>
           <div class="l-tag">Smart Money Concepts · ICT · Breakout Foundation</div>
           <h3 class="l-h">Market Structure &amp; Break of Structure (BOS)</h3>
           <p class="l-p"><strong>Market structure</strong> is the framework all professional price action trading is built on. In any trending market, price advances in <strong>higher highs and higher lows</strong> (uptrend) or <strong>lower highs and lower lows</strong> (downtrend). These swing points are structural levels — the price zones where institutional participants concentrate orders.</p>
           <p class="l-p"><strong>Break of Structure (BOS)</strong> occurs when price breaks above a significant swing high in an uptrend, or below a swing low in a downtrend. This is not just any breakout — it is structural confirmation that institutional players have committed capital to a direction. In SMC and ICT methodology, BOS is the primary signal for trend continuation entries.</p>
           <p class="l-p"><strong>Change of Character (CHOCH)</strong> is the counter — when price breaks structure in the opposite direction to the prevailing trend, signalling a potential reversal. Understanding the difference between BOS and CHOCH is the foundation of reading market intent.</p>
-          <div class="l-pills">
-            <span class="l-pill">Break of Structure</span>
-            <span class="l-pill">Change of Character</span>
-            <span class="l-pill">Swing Highs &amp; Lows</span>
-            <span class="l-pill">Smart Money Concepts</span>
-            <span class="l-pill">ICT Methodology</span>
-          </div>
-          <div class="l-bridge"><strong>How Break Pullback uses this:</strong> Layer 1 detects BOS formations in real time across 29+ pairs. Structural breaks are identified automatically — you focus only on the entry decision.</div>
+          <div class="l-pills"><span class="l-pill">Break of Structure</span><span class="l-pill">Change of Character</span><span class="l-pill">Swing Highs &amp; Lows</span><span class="l-pill">Smart Money Concepts</span><span class="l-pill">ICT Methodology</span></div>
+          <div class="l-bridge"><strong>How Break Pullback uses this:</strong> Layer 1 detects BOS formations in real time across 20+ pairs. Structural breaks are identified automatically — you focus only on the entry decision.</div>
         </div>
       </div>
-
-      <!-- L2 -->
       <div class="lesson reveal">
-        <div>
-          <div class="l-num">02</div>
-          <span class="l-layer">Layer 1</span>
-        </div>
+        <div><div class="l-num">02</div><span class="l-layer">Layer 1</span></div>
         <div>
           <div class="l-tag">Break &amp; Retest · Trend Continuation · High-Probability Entry</div>
           <h3 class="l-h">The Pullback &amp; Retest Entry</h3>
           <p class="l-p">The single principle that separates profitable breakout traders from the rest: <strong>never enter on the initial break — wait for the pullback.</strong></p>
           <p class="l-p">When price breaks a structural level, that level flips function. A swing high that was <strong>resistance becomes support</strong> once broken. Price typically returns to retest this flipped level before continuing. This pullback is the high-probability entry window — better price, tighter stop, and confirmation that the flip held.</p>
           <p class="l-p">The <strong>Break → Pullback → Continuation</strong> sequence is the structure of every institutional trend-following trade. It works on Forex, Gold, and all liquid markets across M15 to D1.</p>
-          <div class="l-pills">
-            <span class="l-pill">Pullback Entry</span>
-            <span class="l-pill">Retest Strategy</span>
-            <span class="l-pill">Level Flip</span>
-            <span class="l-pill">Return to Liquidity</span>
-            <span class="l-pill">Trend Continuation</span>
-          </div>
+          <div class="l-pills"><span class="l-pill">Pullback Entry</span><span class="l-pill">Retest Strategy</span><span class="l-pill">Level Flip</span><span class="l-pill">Return to Liquidity</span><span class="l-pill">Trend Continuation</span></div>
           <div class="l-bridge"><strong>How Break Pullback uses this:</strong> After detecting BOS, Layer 1 monitors price for a valid pullback. The signal fires only when the retest is confirmed — eliminating chase entries entirely.</div>
         </div>
       </div>
-
-      <!-- L3 -->
       <div class="lesson reveal">
-        <div>
-          <div class="l-num">03</div>
-          <span class="l-layer g">Layer 2</span>
-        </div>
+        <div><div class="l-num">03</div><span class="l-layer g">Layer 2</span></div>
         <div>
           <div class="l-tag">Higher Timeframe Analysis · Trend Filter · Directional Bias</div>
           <h3 class="l-h">HTF Daily Bias &amp; Three Candle Monitor</h3>
           <p class="l-p"><strong>HTF bias</strong> is the second critical filter most retail traders ignore entirely. A breakout on H1 that aligns with the Daily trend has fundamentally higher probability than one taken against it.</p>
           <p class="l-p">The Daily timeframe represents the <strong>institutional view</strong>. Banks and funds build positions from daily and weekly charts. Taking a bearish H1 breakout against a bullish Daily structure means standing opposite the largest market participants.</p>
           <p class="l-p">The <strong>Three Candle Monitor</strong> provides an unambiguous bias reading: examine the last three daily candles. Higher closes indicate bullish bias; lower closes indicate bearish. This filter typically eliminates 30–40% of trades — but the remaining entries carry meaningfully higher win rates.</p>
-          <div class="l-pills">
-            <span class="l-pill">HTF Bias</span>
-            <span class="l-pill">Daily Trend</span>
-            <span class="l-pill">Three Candle Monitor</span>
-            <span class="l-pill">Top-Down Analysis</span>
-          </div>
+          <div class="l-pills"><span class="l-pill">HTF Bias</span><span class="l-pill">Daily Trend</span><span class="l-pill">Three Candle Monitor</span><span class="l-pill">Top-Down Analysis</span></div>
           <div class="l-bridge"><strong>How Break Pullback uses this:</strong> Layer 2 reads HTF Daily Bias automatically. Counter-trend signals never reach the trader.</div>
         </div>
       </div>
-
-      <!-- L4 -->
       <div class="lesson reveal">
-        <div>
-          <div class="l-num">04</div>
-          <span class="l-layer g">Layer 3</span>
-        </div>
+        <div><div class="l-num">04</div><span class="l-layer g">Layer 3</span></div>
         <div>
           <div class="l-tag">Currency Strength · Momentum Analysis · Rate of Change</div>
           <h3 class="l-h">Currency Strength Index (CSI) &amp; Rate of Change</h3>
           <p class="l-p">A question most traders never ask: <strong>when EURUSD breaks upward, is EUR strengthening — or is USD simply weakening?</strong> The pair chart cannot tell you. Only by measuring each currency individually can you determine which side is driving the move.</p>
           <p class="l-p"><strong>Currency Strength Index (CSI)</strong> measures the individual momentum of each currency using <strong>Rate of Change (ROC)</strong> — comparing its current price against a basket to its price N periods prior. A positive ROC signals genuine strengthening; negative signals weakness.</p>
           <p class="l-p">If CSI shows GBP is the strongest currency while USD is the weakest during a GBPUSD breakout, that is a high-conviction institutional move. If GBP is actually weak, the breakout lacks real momentum — you avoid it and preserve capital.</p>
-          <div class="l-pills">
-            <span class="l-pill">Currency Strength</span>
-            <span class="l-pill">Rate of Change</span>
-            <span class="l-pill">Momentum Confirmation</span>
-            <span class="l-pill">Pair Selection</span>
-            <span class="l-pill">Strong vs. Weak</span>
-          </div>
+          <div class="l-pills"><span class="l-pill">Currency Strength</span><span class="l-pill">Rate of Change</span><span class="l-pill">Momentum Confirmation</span><span class="l-pill">Pair Selection</span><span class="l-pill">Strong vs. Weak</span></div>
           <div class="l-bridge"><strong>How Break Pullback uses this:</strong> Layer 3 runs real-time ROC-based CSI. A signal fires only when the driving currency is genuinely strong — the final gate before execution.</div>
         </div>
       </div>
-
-      <!-- L5 -->
       <div class="lesson reveal">
-        <div>
-          <div class="l-num">05</div>
-          <span class="l-layer g">Framework</span>
-        </div>
+        <div><div class="l-num">05</div><span class="l-layer g">Framework</span></div>
         <div>
           <div class="l-tag">Putting It All Together · The Complete System</div>
           <h3 class="l-h">The 3-Layer Confluence Model</h3>
           <p class="l-p">No single layer above is a complete system on its own. The edge comes from applying all three as simultaneous confluence filters. A trade qualifies only when all three conditions align.</p>
-          <div style="margin:28px 0;border:1px solid var(--rule);">
-            <div style="display:flex;align-items:flex-start;gap:20px;padding:20px 24px;border-bottom:1px solid var(--rule2);">
-              <div style="font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:2px;font-weight:600;">L — 01</div>
-              <div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">BOS confirmed + Pullback retest complete</div><div style="font-size:14px;color:var(--mid);font-weight:400;line-height:1.75;">Wait for structure to break. Wait again for the retest. Both must happen.</div></div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:20px;padding:20px 24px;border-bottom:1px solid var(--rule2);">
-              <div style="font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:2px;font-weight:600;">L — 02</div>
-              <div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">Direction aligned with HTF Daily Bias</div><div style="font-size:14px;color:var(--mid);font-weight:400;line-height:1.75;">Three Candle Monitor confirms the Daily trend supports this direction.</div></div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:20px;padding:20px 24px;">
-              <div style="font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:2px;font-weight:600;">L — 03</div>
-              <div><div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:5px;">CSI confirms the driving currency is strong</div><div style="font-size:14px;color:var(--mid);font-weight:400;line-height:1.75;">Base is genuinely strong, quote is genuinely weak. Real momentum is present.</div></div>
-            </div>
+          <div style="margin:30px 0;border:1px solid var(--rule);">
+            <div style="display:flex;align-items:flex-start;gap:22px;padding:22px 28px;border-bottom:1px solid var(--rule2);"><div style="font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:3px;">L — 01</div><div><div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;">BOS confirmed + Pullback retest complete</div><div style="font-size:14.5px;color:var(--mid);font-weight:300;line-height:1.8;">Wait for structure to break. Wait again for the retest. Both must happen.</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:22px;padding:22px 28px;border-bottom:1px solid var(--rule2);"><div style="font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:3px;">L — 02</div><div><div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;">Direction aligned with HTF Daily Bias</div><div style="font-size:14.5px;color:var(--mid);font-weight:300;line-height:1.8;">Three Candle Monitor confirms the Daily trend supports this direction.</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:22px;padding:22px 28px;"><div style="font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;width:60px;flex-shrink:0;padding-top:3px;">L — 03</div><div><div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;">CSI confirms the driving currency is strong</div><div style="font-size:14.5px;color:var(--mid);font-weight:300;line-height:1.8;">Base is genuinely strong, quote is genuinely weak. Real momentum is present.</div></div></div>
           </div>
-          <div style="border:1px solid var(--rule);padding:20px 24px;background:var(--ink2);">
-            <p style="font-size:15px;color:var(--mid);font-weight:400;line-height:1.8;">When all three layers align, the probability of a successful trade increases substantially. This is the exact framework Break Pullback applies in real time — across 29+ pairs, 24 hours a day, five days a week.</p>
-          </div>
+          <div style="border:1px solid var(--rule);padding:22px 28px;background:var(--ink2);"><p style="font-size:15.5px;color:var(--mid);font-weight:300;line-height:1.85;">When all three layers align, the probability of a successful trade increases substantially. This is the exact framework Break Pullback applies in real time — across 20+ pairs, 24 hours a day, five days a week.</p></div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
 <!-- 3-LAYER -->
-<section id="layers" style="padding:0 32px 96px;">
+<section id="layers" style="padding:0 32px 100px;">
   <hr class="rule">
-  <div class="ctr" style="padding-top:80px;">
-    <div class="sh reveal">
-      <span class="lbl">Break Pullback — The Indicator</span>
-      <h2 class="sh-h">All Three Layers.<br>Automated. In Real Time.</h2>
-      <p class="sh-p">Once you understand the theory from the lessons above, Break Pullback applies the complete 3-layer system automatically across all major and minor Forex pairs and Gold.</p>
-    </div>
+  <div class="ctr" style="padding-top:84px;">
+    <div class="sh reveal"><span class="lbl">Break Pullback — The Indicator</span><h2 class="sh-h">All Three Layers.<br>Automated. In Real Time.</h2><p class="sh-p">Once you understand the theory from the lessons above, Break Pullback applies the complete 3-layer system automatically across all major and minor Forex pairs and Gold.</p></div>
     <div class="ly-grid reveal">
-      <div class="ly-card">
-        <div class="ly-n">01 / 03</div>
-        <div class="ly-lbl">Layer 1 · BOS + Pullback</div>
-        <h3 class="ly-h">Structural Break &amp;<br>Retest Detection</h3>
-        <p class="ly-p">Identifies Break of Structure in real time. Monitors price until a valid pullback retest is confirmed. Signal fires only then — never on the initial break.</p>
-      </div>
-      <div class="ly-card">
-        <div class="ly-n">02 / 03</div>
-        <div class="ly-lbl">Layer 2 · HTF Bias</div>
-        <h3 class="ly-h">Daily Trend<br>Filter</h3>
-        <p class="ly-p">Three Candle Monitor reads the HTF Daily direction on every active pair. Counter-trend signals are suppressed before reaching the trader.</p>
-      </div>
-      <div class="ly-card">
-        <div class="ly-n">03 / 03</div>
-        <div class="ly-lbl">Layer 3 · Currency Strength</div>
-        <h3 class="ly-h">Momentum<br>Confirmation</h3>
-        <p class="ly-p">Real-time ROC-based CSI runs on every candidate. A signal activates only when the driving currency is genuinely strong — the final confirmation before execution.</p>
-      </div>
+      <div class="ly-card"><div class="ly-n">01 / 03</div><div class="ly-lbl">Layer 1 · BOS + Pullback</div><h3 class="ly-h">Structural Break &amp;<br>Retest Detection</h3><p class="ly-p">Identifies Break of Structure in real time. Monitors price until a valid pullback retest is confirmed. Signal fires only then — never on the initial break.</p></div>
+      <div class="ly-card"><div class="ly-n">02 / 03</div><div class="ly-lbl">Layer 2 · HTF Bias</div><h3 class="ly-h">Daily Trend<br>Filter</h3><p class="ly-p">Three Candle Monitor reads the HTF Daily direction on every active pair. Counter-trend signals are suppressed before reaching the trader.</p></div>
+      <div class="ly-card"><div class="ly-n">03 / 03</div><div class="ly-lbl">Layer 3 · Currency Strength</div><h3 class="ly-h">Momentum<br>Confirmation</h3><p class="ly-p">Real-time ROC-based CSI runs on every candidate. A signal activates only when the driving currency is genuinely strong — the final confirmation before execution.</p></div>
     </div>
   </div>
 </section>
 
 <!-- FEATURES -->
-<section id="features" style="padding:0 32px 96px;">
+<section id="features" style="padding:0 32px 100px;">
   <hr class="rule">
-  <div class="ctr" style="padding-top:80px;">
-    <div class="sh reveal">
-      <span class="lbl">Indicator Features</span>
-      <h2 class="sh-h">Everything Inside<br>Break Pullback</h2>
-    </div>
+  <div class="ctr" style="padding-top:84px;">
+    <div class="sh reveal"><span class="lbl">Indicator Features</span><h2 class="sh-h">Everything Inside<br>Break Pullback</h2></div>
     <div class="ft-grid reveal">
-      <div class="ft-card">
-        <div class="ft-icon"><i data-lucide="scan-search" style="width:20px;height:20px"></i></div>
-        <h3 class="ft-h">Multi-Pair Auto Scanner</h3>
-        <p class="ft-p">Monitors 29+ pairs simultaneously — EURUSD, GBPUSD, USDJPY, XAUUSD, and all major and minor Forex pairs. No manual chart hopping.</p>
-      </div>
-      <div class="ft-card">
-        <div class="ft-icon"><i data-lucide="git-branch" style="width:20px;height:20px"></i></div>
-        <h3 class="ft-h">BOS &amp; CHOCH Detection</h3>
-        <p class="ft-p">Identifies Break of Structure and Change of Character in real time on any timeframe from M1 to D1.</p>
-      </div>
-      <div class="ft-card">
-        <div class="ft-icon"><i data-lucide="undo-2" style="width:20px;height:20px"></i></div>
-        <h3 class="ft-h">Pullback Retest Monitor</h3>
-        <p class="ft-p">Entry signal triggers only on a confirmed pullback retest of the broken level. No premature or chase entries.</p>
-      </div>
-      <div class="ft-card">
-        <div class="ft-icon"><i data-lucide="compass" style="width:20px;height:20px"></i></div>
-        <h3 class="ft-h">HTF Daily Bias Filter</h3>
-        <p class="ft-p">Three Candle Monitor reads the Daily trend direction. Counter-trend signals are automatically excluded from output.</p>
-      </div>
-      <div class="ft-card">
-        <div class="ft-icon"><i data-lucide="activity" style="width:20px;height:20px"></i></div>
-        <h3 class="ft-h">Currency Strength Index</h3>
-        <p class="ft-p">Real-time ROC-based CSI confirms which currency is genuinely driving momentum behind every breakout candidate.</p>
-      </div>
-      <div class="ft-card" style="border-left:2px solid var(--green);">
-        <div class="ft-icon" style="color:var(--green)"><i data-lucide="book-open" style="width:20px;height:20px"></i></div>
-        <h3 class="ft-h" style="color:var(--green)">Free Education Bundle</h3>
-        <p class="ft-p">Complete structured lessons on BOS, Pullback Retest, HTF Bias, and CSI. Understand every signal before acting on it.</p>
-      </div>
+      <div class="ft-card"><div class="ft-icon"><i data-lucide="scan-search" style="width:22px;height:22px"></i></div><h3 class="ft-h">Multi-Pair Auto Scanner</h3><p class="ft-p">Monitors 20+ pairs simultaneously — EURUSD, GBPUSD, USDJPY, XAUUSD, and all major and minor Forex pairs. No manual chart hopping.</p></div>
+      <div class="ft-card"><div class="ft-icon"><i data-lucide="git-branch" style="width:22px;height:22px"></i></div><h3 class="ft-h">BOS &amp; CHOCH Detection</h3><p class="ft-p">Identifies Break of Structure and Change of Character in real time on any timeframe from M1 to D1.</p></div>
+      <div class="ft-card"><div class="ft-icon"><i data-lucide="undo-2" style="width:22px;height:22px"></i></div><h3 class="ft-h">Pullback Retest Monitor</h3><p class="ft-p">Entry signal triggers only on a confirmed pullback retest of the broken level. No premature or chase entries.</p></div>
+      <div class="ft-card"><div class="ft-icon"><i data-lucide="compass" style="width:22px;height:22px"></i></div><h3 class="ft-h">HTF Daily Bias Filter</h3><p class="ft-p">Three Candle Monitor reads the Daily trend direction. Counter-trend signals are automatically excluded from output.</p></div>
+      <div class="ft-card"><div class="ft-icon"><i data-lucide="activity" style="width:22px;height:22px"></i></div><h3 class="ft-h">Currency Strength Index</h3><p class="ft-p">Real-time ROC-based CSI confirms which currency is genuinely driving momentum behind every breakout candidate.</p></div>
+      <div class="ft-card" style="border-left:2px solid var(--green);"><div class="ft-icon" style="color:var(--green)"><i data-lucide="book-open" style="width:22px;height:22px"></i></div><h3 class="ft-h" style="color:var(--green)">Free Education Bundle</h3><p class="ft-p">Complete structured lessons on BOS, Pullback Retest, HTF Bias, and CSI. Understand every signal before acting on it.</p></div>
     </div>
   </div>
 </section>
 
 <!-- COMPARISON -->
-<section style="padding:0 32px 96px;">
+<section style="padding:0 32px 100px;">
   <hr class="rule">
-  <div class="ctr-md" style="padding-top:80px;">
-    <div class="sh reveal">
-      <span class="lbl">Comparison</span>
-      <h2 class="sh-h">Why Most Breakout<br>Indicators Fall Short</h2>
-    </div>
+  <div class="ctr-md" style="padding-top:84px;">
+    <div class="sh reveal"><span class="lbl">Comparison</span><h2 class="sh-h">Why Most Breakout<br>Indicators Fall Short</h2></div>
     <div class="reveal" style="border:1px solid var(--rule);overflow:hidden;">
       <table class="cmp">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>Break Pullback</th>
-            <th>Typical Breakout Indicator</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Feature</th><th>Break Pullback</th><th>Typical Breakout Indicator</th></tr></thead>
         <tbody>
-          <tr><td>Pullback Retest Entry — not chase</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
-          <tr><td>HTF Daily Bias Filter</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
-          <tr><td>Currency Strength Confirmation</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
-          <tr><td>Multi-Pair Scanner (29+ pairs)</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
-          <tr><td>BOS / CHOCH Structure Detection</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
-          <tr><td>Free Structured Education Included</td><td><i data-lucide="check" style="width:16px;height:16px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:16px;height:16px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>Pullback Retest Entry — not chase</td><td><i data-lucide="check" style="width:18px;height:18px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:18px;height:18px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>HTF Daily Bias Filter</td><td><i data-lucide="check" style="width:18px;height:18px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:18px;height:18px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>Currency Strength Confirmation</td><td><i data-lucide="check" style="width:18px;height:18px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:18px;height:18px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>Multi-Pair Scanner (20+ pairs)</td><td><i data-lucide="check" style="width:18px;height:18px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:18px;height:18px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>BOS / CHOCH Structure Detection</td><td><i data-lucide="check" style="width:18px;height:18px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:18px;height:18px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
+          <tr><td>Free Structured Education Included</td><td><i data-lucide="check" style="width:18px;height:18px;color:var(--green);margin:0 auto;display:block;"></i></td><td><i data-lucide="x" style="width:18px;height:18px;color:rgba(239,68,68,.4);margin:0 auto;display:block;"></i></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section id="faq" style="padding:0 32px 96px;">
-  <hr class="rule">
-  <div class="ctr-sm" style="padding-top:80px;">
-    <div class="sh reveal">
-      <span class="lbl">FAQ</span>
-      <h2 class="sh-h">Frequently Asked Questions</h2>
-    </div>
-    <div class="reveal" style="border-top:1px solid var(--rule);">
-      <div class="faq-item">
-        <button class="faq-btn"><span class="faq-q">What is a Break and Pullback strategy?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
-        <div class="faq-body">A Break and Pullback strategy involves waiting for price to break a key structural level, then waiting for price to pull back and retest that broken level before entering in the direction of the breakout. The retest confirms the level has flipped — providing a high-probability entry with a clear invalidation point and tight stop loss.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-btn"><span class="faq-q">What is Break of Structure (BOS)?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
-        <div class="faq-body">BOS occurs when price breaks above a previous swing high in an uptrend, or below a previous swing low in a downtrend. It confirms the current trend is continuing. BOS is a foundational concept in Smart Money Concepts and ICT-style trading, used to identify trend continuation setups with institutional alignment.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-btn"><span class="faq-q">Why is HTF Daily Bias important for breakout trading?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
-        <div class="faq-body">HTF Daily Bias ensures you only take entries aligned with the dominant daily trend. Trading breakouts against the daily trend means opposing institutional order flow. Adding this single filter eliminates roughly 30–40% of trade opportunities but significantly improves the quality of remaining setups.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-btn"><span class="faq-q">How does Currency Strength Index improve entries?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
-        <div class="faq-body">CSI measures the individual strength of each currency using Rate of Change (ROC). When a breakout occurs, CSI confirms whether the driving currency is genuinely strong and the paired currency genuinely weak. This prevents entries on breakouts that lack real institutional momentum — the type that reverse quickly and erode account equity.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-btn"><span class="faq-q">What pairs and timeframes does Break Pullback support?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
-        <div class="faq-body">Break Pullback works on all major and minor Forex pairs — EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, GBPJPY — plus Gold (XAUUSD). Recommended timeframes are M15–H4 for intraday and H4–D1 for swing trading. The scanner monitors all 29+ pairs from a single chart.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-btn"><span class="faq-q">Do I need to know SMC or ICT to use this?</span><i data-lucide="plus" class="faq-ico" style="width:18px;height:18px;"></i></button>
-        <div class="faq-body">No prior knowledge is required. The five free lessons on this page cover every concept from first principles. Work through the education section before evaluating the indicator. If you already trade SMC or ICT methods, Break Pullback will automate the pattern recognition you have been doing manually.</div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ========== LAMBO BACKGROUND WRAPPER ========== -->
+<div class="bg-lambo">
 
-<!-- TELEGRAM -->
-<section style="padding:0 32px 96px;">
-  <hr class="rule">
-  <div class="ctr-sm" style="padding-top:80px;">
-    <div class="tg-card reveal">
-      <div class="tg-ico">
-        <svg style="width:22px;height:22px;color:var(--mid)" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+  <!-- FAQ — opaque top, fading to transparent bottom -->
+  <div class="faq-wrap" style="padding:0 32px 80px;">
+    <hr class="rule">
+    <div class="ctr-sm" style="padding-top:84px;">
+      <div class="sh reveal">
+        <span class="lbl">FAQ</span>
+        <h2 class="sh-h">Frequently Asked Questions</h2>
       </div>
-      <div>
-        <h3 class="tg-h">Questions? Contact via Telegram</h3>
-        <p class="tg-p">Free education is also available through direct chat or a live trading session. Ask anything about the Break &amp; Pullback strategy, signal interpretation, or indicator usage.</p>
-        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
-          <a href="https://t.me/abcdwave" target="_blank" rel="noopener noreferrer" class="tg-btn">
-            <svg style="width:14px;height:14px" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-            @abcdwave
-          </a>
-          <span style="font-family:var(--mono);font-size:12px;color:var(--mid);letter-spacing:.03em;">Quick response · Live trading sessions available</span>
+      <div class="reveal" style="border-top:1px solid rgba(255,255,255,.05);">
+        <div class="faq-item">
+          <button class="faq-btn"><span class="faq-q">What is a Break and Pullback strategy?</span><i data-lucide="plus" class="faq-ico" style="width:20px;height:20px;"></i></button>
+          <div class="faq-body">A Break and Pullback strategy involves waiting for price to break a key structural level, then waiting for price to pull back and retest that broken level before entering in the direction of the breakout. The retest confirms the level has flipped — providing a high-probability entry with a clear invalidation point and tight stop loss.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn"><span class="faq-q">What is Break of Structure (BOS)?</span><i data-lucide="plus" class="faq-ico" style="width:20px;height:20px;"></i></button>
+          <div class="faq-body">BOS occurs when price breaks above a previous swing high in an uptrend, or below a previous swing low in a downtrend. It confirms the current trend is continuing. BOS is a foundational concept in Smart Money Concepts and ICT-style trading, used to identify trend continuation setups with institutional alignment.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn"><span class="faq-q">Why is HTF Daily Bias important for breakout trading?</span><i data-lucide="plus" class="faq-ico" style="width:20px;height:20px;"></i></button>
+          <div class="faq-body">HTF Daily Bias ensures you only take entries aligned with the dominant daily trend. Trading breakouts against the daily trend means opposing institutional order flow. Adding this single filter eliminates roughly 30–40% of trade opportunities but significantly improves the quality of remaining setups.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn"><span class="faq-q">How does Currency Strength Index improve entries?</span><i data-lucide="plus" class="faq-ico" style="width:20px;height:20px;"></i></button>
+          <div class="faq-body">CSI measures the individual strength of each currency using Rate of Change (ROC). When a breakout occurs, CSI confirms whether the driving currency is genuinely strong and the paired currency genuinely weak. This prevents entries on breakouts that lack real institutional momentum — the type that reverse quickly and erode account equity.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn"><span class="faq-q">What pairs and timeframes does Break Pullback support?</span><i data-lucide="plus" class="faq-ico" style="width:20px;height:20px;"></i></button>
+          <div class="faq-body">Break Pullback works on all major and minor Forex pairs — EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, GBPJPY — plus Gold (XAUUSD). Recommended timeframes are M15–H4 for intraday and H4–D1 for swing trading. The scanner monitors all 20+ pairs from a single chart.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn"><span class="faq-q">Do I need to know SMC or ICT to use this?</span><i data-lucide="plus" class="faq-ico" style="width:20px;height:20px;"></i></button>
+          <div class="faq-body">No prior knowledge is required. The five free lessons on this page cover every concept from first principles. Work through the education section before evaluating the indicator. If you already trade SMC or ICT methods, Break Pullback will automate the pattern recognition you have been doing manually.</div>
         </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- FINAL CTA -->
-<div class="final">
-  <div style="position:relative;z-index:1;">
-    <div class="reveal">
-      <div style="margin-bottom:20px;"><span class="lbl lbl-g" style="justify-content:center;">Ready to Trade Smarter</span></div>
-      <h2 class="final-h">Stop Missing<br><em>High-Probability Setups.</em></h2>
-      <p class="final-p">Read the free lessons. Understand the 3-layer system. Let Break Pullback handle the scanning across every pair, every session.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">
-        <a href="#education" class="btn-g">Read Free Lessons</a>
-        <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="btn-p">Get Break Pullback on MQL5 <i data-lucide="arrow-up-right" style="width:14px;height:14px"></i></a>
-      </div>
-      <div class="final-meta">
-        <span><i data-lucide="download" style="width:12px;height:12px;color:var(--green)"></i> Instant Download</span>
-        <span><i data-lucide="book-open" style="width:12px;height:12px;color:var(--green)"></i> Free Education</span>
-        <span><i data-lucide="headphones" style="width:12px;height:12px;color:var(--green)"></i> Support Included</span>
-        <span><i data-lucide="refresh-cw" style="width:12px;height:12px;color:var(--green)"></i> Free Updates</span>
+  <!-- TELEGRAM — ultra transparent, car visible, glass card -->
+  <div class="tg-wrap" style="padding:0 32px 80px;">
+    <div class="ctr-sm">
+      <div class="tg-card reveal">
+        <div class="tg-ico">
+          <svg style="width:24px;height:24px" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </div>
+        <div>
+          <h3 class="tg-h">Questions? Contact via Telegram</h3>
+          <p class="tg-p">Free education is also available through direct chat or a live trading session. Ask anything about the Break &amp; Pullback strategy, signal interpretation, or indicator usage.</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
+            <a href="https://t.me/abcdwave" target="_blank" rel="noopener noreferrer" class="tg-btn">
+              <svg style="width:15px;height:15px" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              <span class="tg-handle">@abcdwave</span>
+            </a>
+            <span style="font-family:var(--mono);font-size:12px;color:rgba(200,208,222,.4);letter-spacing:.03em;">Quick response · Live trading sessions available</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- FINAL CTA — minimal overlay, car fully exposed -->
+  <div class="final">
+    <div style="position:relative;z-index:1;">
+      <div class="reveal">
+        <div style="margin-bottom:22px;"><span class="lbl lbl-g" style="justify-content:center;">Ready to Trade Smarter</span></div>
+        <h2 class="final-h">Stop Missing<br><em>High-Probability Setups.</em></h2>
+        <p class="final-p">Read the free lessons. Understand the 3-layer system. Let Break Pullback handle the scanning across every pair, every session.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">
+          <a href="#education" class="btn-g">Read Free Lessons</a>
+          <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer" class="btn-p">Get Break Pullback on MQL5 <i data-lucide="arrow-up-right" style="width:15px;height:15px"></i></a>
+        </div>
+        <div class="final-meta">
+          <span><i data-lucide="download" style="width:14px;height:14px;color:var(--green)"></i> Instant Download</span>
+          <span><i data-lucide="book-open" style="width:14px;height:14px;color:var(--green)"></i> Free Education</span>
+          <span><i data-lucide="headphones" style="width:14px;height:14px;color:var(--green)"></i> Support Included</span>
+          <span><i data-lucide="refresh-cw" style="width:14px;height:14px;color:var(--green)"></i> Free Updates</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+<!-- ========== END LAMBO WRAPPER ========== -->
 
 <!-- FOOTER -->
 <footer>
@@ -734,70 +742,40 @@ footer { padding:40px 32px;border-top:1px solid var(--rule);background:var(--ink
       <a href="https://t.me/abcdwave" target="_blank" class="ac">Telegram</a>
     </div>
   </div>
-  <div style="max-width:1160px;margin:24px auto 0;border-top:1px solid var(--rule2);padding-top:20px;">
-    <p class="disc"><strong style="color:var(--light);font-weight:600">Risk Disclaimer:</strong> Forex and gold trading carries a high level of risk and may not be suitable for all investors. Break Pullback is an analytical indicator — it does not guarantee profits. Always use proper risk management. Never risk more than you can afford to lose. Past performance does not guarantee future results.</p>
+  <div style="max-width:1200px;margin:26px auto 0;border-top:1px solid var(--rule2);padding-top:22px;">
+    <p class="disc"><strong style="color:var(--dim);font-weight:500">Risk Disclaimer:</strong> Forex and gold trading carries a high level of risk and may not be suitable for all investors. Break Pullback is an analytical indicator — it does not guarantee profits. Always use proper risk management. Never risk more than you can afford to lose. Past performance does not guarantee future results.</p>
   </div>
 </footer>
 
 <!-- MOBILE FLOATING CTA -->
 <div class="mob-cta" id="mobCta">
   <a href="https://www.mql5.com/en/market/product/162960" target="_blank" rel="noopener noreferrer">
-    <i data-lucide="shopping-cart" style="width:15px;height:15px"></i> Get Break Pullback on MQL5
+    <i data-lucide="shopping-cart" style="width:16px;height:16px"></i> Get Break Pullback on MQL5
   </a>
 </div>
 
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-
-    // Icons
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-
-    // Mobile menu
-    const mobBtn = document.getElementById('mob-btn');
-    const mobMenu = document.getElementById('mob-menu');
-    let open = false;
-    mobBtn.addEventListener('click', () => { open = !open; mobMenu.style.display = open ? 'flex' : 'none'; });
-    document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => { mobMenu.style.display='none'; open=false; }));
-
-    // Mobile CTA visibility
-    const mobCta = document.getElementById('mobCta');
-    function checkMob() { mobCta.style.display = window.innerWidth < 900 ? 'block' : 'none'; }
-    checkMob(); window.addEventListener('resize', checkMob);
-
-    // FAQ accordion
-    document.querySelectorAll('.faq-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const item = btn.closest('.faq-item');
-        const body = item.querySelector('.faq-body');
-        const isOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-body').style.display='none'; });
-        if (!isOpen) { item.classList.add('open'); body.style.display='block'; }
-      });
+  lucide.createIcons();
+  const mobBtn=document.getElementById('mob-btn'),mobMenu=document.getElementById('mob-menu');let open=false;
+  mobBtn.addEventListener('click',()=>{open=!open;mobMenu.style.display=open?'flex':'none';});
+  document.querySelectorAll('.ml').forEach(l=>l.addEventListener('click',()=>{mobMenu.style.display='none';open=false;}));
+  const mobCta=document.getElementById('mobCta');
+  function checkMob(){mobCta.style.display=window.innerWidth<900?'block':'none';}
+  checkMob();window.addEventListener('resize',checkMob);
+  document.querySelectorAll('.faq-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const item=btn.closest('.faq-item'),body=item.querySelector('.faq-body'),isOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-body').style.display='none';});
+      if(!isOpen){item.classList.add('open');body.style.display='block';}
     });
-
-    // Scroll reveal
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
-    }, { threshold: .08, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', function(e) {
-        const h = this.getAttribute('href'); if (h==='#') return;
-        e.preventDefault(); const t = document.querySelector(h);
-        if (t) window.scrollTo({ top: t.offsetTop-90, behavior:'smooth' });
-      });
-    });
-
-    // Nav border highlight on scroll
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.style.borderBottomColor = window.scrollY > 50 ? 'rgba(41,182,246,.15)' : 'rgba(255,255,255,.07)';
-    });
-
-  }); // end DOMContentLoaded
+  });
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',function(e){const h=this.getAttribute('href');if(h==='#')return;e.preventDefault();const t=document.querySelector(h);if(t)window.scrollTo({top:t.offsetTop-90,behavior:'smooth'});});
+  });
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{nav.style.borderBottomColor=window.scrollY>50?'rgba(41,182,246,.15)':'rgba(255,255,255,.07)';});
 </script>
 </body>
 </html>
