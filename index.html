@@ -8,27 +8,6 @@
 <meta name="description" content="Learn the professional Break & Pullback strategy: Break of Structure, Pullback Retest, HTF Daily Bias, Currency Strength. Free education. Automate with MT5.">
 <link rel="canonical" href="https://www.mql5.com/en/market/product/162960">
 
-<!-- ========== OPEN GRAPH / LINK PREVIEW TAGS ========== -->
-<!-- Facebook, WhatsApp, LinkedIn, Instagram -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://varieface.github.io/breakpullback/">
-<meta property="og:title" content="Break Pullback — Breakout & Pullback Trading Education + MT5 Indicator">
-<meta property="og:description" content="Learn the professional Break & Pullback strategy: Break of Structure, Pullback Retest, HTF Daily Bias, Currency Strength. Free education. Automate with MT5.">
-<!-- Thumbnail: Screenshot Utama dari Produk MQL5 -->
-<meta property="og:image" content="https://c.mql5.com/market/product/preview/162960/162960-0.jpg">
-
-<!-- Twitter / X -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://varieface.github.io/breakpullback/">
-<meta property="twitter:title" content="Break Pullback — Breakout & Pullback Trading Education + MT5 Indicator">
-<meta property="twitter:description" content="Learn the professional Break & Pullback strategy: Break of Structure, Pullback Retest, HTF Daily Bias, Currency Strength. Free education. Automate with MT5.">
-<!-- Thumbnail: Screenshot Utama dari Produk MQL5 -->
-<meta property="twitter:image" content="https://c.mql5.com/market/product/preview/162960/162960-0.jpg">
-
-<!-- Telegram (Khusus memaksa ambil gambar ini) -->
-<meta property="telegram:image" content="https://c.mql5.com/market/product/preview/162960/162960-0.jpg">
-
-<!-- ========== STYLES & FONTS ========== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -669,7 +648,7 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
       <div class="ft-card"><div class="ft-icon"><i data-lucide="undo-2" style="width:22px;height:22px"></i></div><h3 class="ft-h">Pullback Retest Monitor</h3><p class="ft-p">Entry signal triggers only on a confirmed pullback retest of the broken level. No premature or chase entries.</p></div>
       <div class="ft-card"><div class="ft-icon"><i data-lucide="compass" style="width:22px;height:22px"></i></div><h3 class="ft-h">HTF Daily Bias Filter</h3><p class="ft-p">Three Candle Monitor reads the Daily trend direction. Counter-trend signals are automatically excluded from output.</p></div>
       <div class="ft-card"><div class="ft-icon"><i data-lucide="activity" style="width:22px;height:22px"></i></div><h3 class="ft-h">Currency Strength Index</h3><p class="ft-p">Real-time ROC-based CSI confirms which currency is genuinely driving momentum behind every breakout candidate.</p></div>
-      <div class="ft-card" style="border-left:2px solid var(--green);"><div class="ft-icon" style="color:var(--green)"><i data-lucide="book-open" style="width:22px;height:22px"></i></div><h3 class="ft-h" style="color:var(--green)">Free Education Bundle</h3><p class="ft-p">Complete structured lessons on BOS, Pullback Retest, HTF Bias, and CSI. Understand every signal before acting on it.</p></div>
+      <div class="ft-card" style="border-left:2px solid var(--green);"><div class="ft-icon" style="color:var(--green)"><i data-lucide="book-open" style="width:22px;height:22px"></i></div><h3 class="ft-h" style="color:var(--green)">Free Education Bundle</h3><p class="ft-p">Structured lessons on BOS, Pullback, HTF Bias, and CSI. Understand every signal before acting. Includes live trading via Zoom or other platforms.</p></div>
     </div>
   </div>
 </section>
@@ -940,6 +919,8 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
         activeId = section.id;
       } else {
         // Karena array sudah diurutkan, jika tidak memenuhi, berarti kita belum sampai ke section ini (atau sudah lewat sebelumnya)
+        // Kita break agar loop tidak membuang waktu mengecek section yang ada jauh di bawah
+        // TAPI perhatikan: jika kita scroll di atas, loop berhenti di section pertama yang TIDAK terpenuhi.
         // Kita ingin section terakhir yang TERPENUHI.
         // Jadi kita perhatikan logika "if" di atas: dia meng-update activeId selama scrollY > absTop.
         // Jadi loop sebaiknya tidak break di sini, agar tetap mengecek semua? 
