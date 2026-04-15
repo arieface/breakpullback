@@ -451,8 +451,8 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
       <div class="foot-logo">Break<span style="color:var(--green)">Pullback</span></div>
     </a>
     <div class="nav-links">
-      <a href="#education" data-section="education">Education</a>
       <a href="#problem" data-section="problem">The Problem</a>
+      <a href="#education" data-section="education">Education</a>
       <a href="#layers" data-section="layers">3-Layer System</a>
       <a href="#features" data-section="features">Features</a>
       <a href="#faq" data-section="faq">FAQ</a>
@@ -463,8 +463,8 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
     <button id="mob-btn" aria-label="Menu"><i data-lucide="menu" style="width:22px;height:22px"></i></button>
   </div>
   <div id="mob-menu">
-    <a href="#education" class="ml" data-section="education">Education</a>
     <a href="#problem" class="ml" data-section="problem">The Problem</a>
+    <a href="#education" class="ml" data-section="education">Education</a>
     <a href="#layers" class="ml" data-section="layers">3-Layer System</a>
     <a href="#features" class="ml" data-section="features">Features</a>
     <a href="#faq" class="ml" data-section="faq">FAQ</a>
@@ -832,7 +832,10 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
   }, { threshold: .08, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  /* ── Smooth scroll untuk anchor links ── */
+  /* ── Smooth scroll dengan lock scroll spy ── */
+  let scrollLockTimer = null;
+  let isScrollingTo = false;
+
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function(e) {
       const h = this.getAttribute('href');
@@ -840,9 +843,16 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
       e.preventDefault();
       const t = document.querySelector(h);
       if (t) {
-        t.scrollIntoView({ behavior: 'smooth' });
         const sectionId = h.replace('#', '');
+        // Lock scroll spy, langsung set active tanpa tunggu scroll
+        isScrollingTo = true;
         setActive(sectionId);
+        if (scrollLockTimer) clearTimeout(scrollLockTimer);
+        // Scroll manual dengan offset header (ticker 34px + nav 60px)
+        const targetY = getAbsoluteTop(t) - 100;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+        // Lepas lock setelah animasi scroll selesai (~900ms)
+        scrollLockTimer = setTimeout(() => { isScrollingTo = false; }, 900);
       }
     });
   });
@@ -860,8 +870,8 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
      ══════════════════════════════════════════════════ */
 
   const sectionElements = [
-    { id: 'education', el: document.getElementById('education') },
     { id: 'problem',   el: document.getElementById('problem')   },
+    { id: 'education', el: document.getElementById('education') },
     { id: 'layers',    el: document.getElementById('layers')     },
     { id: 'features',  el: document.getElementById('features')  },
     { id: 'faq',       el: document.getElementById('faq')       }
@@ -907,6 +917,9 @@ footer { padding:44px 32px;border-top:1px solid var(--rule);background:var(--ink
   sections.sort((a, b) => a.absTop - b.absTop);
 
   window.addEventListener('scroll', () => {
+    // Jika sedang scroll programatik (klik nav), skip — jangan override highlight
+    if (isScrollingTo) return;
+
     const scrollY = window.scrollY;
     const offset = 120; // Offset buffer untuk header sticky
     let activeId = '';
